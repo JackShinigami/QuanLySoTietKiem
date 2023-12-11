@@ -7,6 +7,7 @@ using System.Reflection.Metadata;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using DAL_QLSTK;
 using DTO_QLSTK;
+using System.Linq;
 
 namespace BUS_QLSTK
 {
@@ -181,11 +182,22 @@ namespace BUS_QLSTK
         }
 
         //todo: đồng nhất kiểu Date
-        List<dynamic> getList_DoanhSoNgay(DateTime ngay)
+        public List<dynamic> getList_DoanhSoNgay(DateTime ngay)
         {
             DAL_PhieuGui dal = DAL_PhieuGui.Instance;
             DAL_PhieuRut dal2 = DAL_PhieuRut.Instance;
             DAL_SoTietKiem dal3 = DAL_SoTietKiem.Instance;
+            DAL_Config dal4 = DAL_Config.Instance;
+
+            //lay danh sach cac loai tiet kiem dang co trong config (chi lay ki han)
+            var list_LoaiTietKiem1 = DAL_Config.Instance.GetList_LoaiTietKiem().Select(x => new { Loaitietkiem=(int) x.Kyhan });
+            //lay danh sách các loại tiết kiệm từng được tạo ra trong sổ tiết kiệm
+            var list_LoaiTietKiem2 = dal3.GetList_SoTietKiem().Select(x => new { Loaitietkiem= (int)x.Loaitietkiem }).Distinct();
+            //lấy danh sách các loại tiết kiệm từ trước tới nay
+            var list_LoaiTietKiem=list_LoaiTietKiem1.Union(list_LoaiTietKiem2);
+
+
+
             //lay phieu gui theo ngay join voi so tiet kiem de lay loai tiet kiem
             var list_PhieuGui = dal.GetList_PhieuGui().Where(x => x.Ngaygui == ngay)
                 .Join(dal3.GetList_SoTietKiem(), x => x.Maso, y => y.Maso, (x, y) => new { x, y })
@@ -193,6 +205,13 @@ namespace BUS_QLSTK
             //lay doanh so gui theo ngay group boi loai tiet kiem
             var list_DoanhSoGui = list_PhieuGui.GroupBy(x => x.Loaitietkiem)
                 .Select(x => new { Loaitietkiem = x.Key, Tongtiengui = x.Sum(y => y.Sotien) });
+            
+            var list_DoanhSoGui2 = from loaitietkiem in list_LoaiTietKiem
+                                   join doanhso in list_DoanhSoGui on loaitietkiem.Loaitietkiem equals doanhso.Loaitietkiem into temp
+                                   from doanhso in temp.DefaultIfEmpty()
+                                   select new { Loaitietkiem = loaitietkiem.Loaitietkiem, Tongtiengui = doanhso == null ? 0 : doanhso.Tongtiengui };
+
+
 
 
             //lay phieu rut theo ngay join voi so tiet kiem de lay loai tiet kiem
@@ -203,17 +222,35 @@ namespace BUS_QLSTK
             var list_DoanhSoRut = list_PhieuRut.GroupBy(x => x.Loaitietkiem)
                 .Select(x => new { Loaitietkiem = x.Key, Tongtienrut = x.Sum(y => y.Sotien) });
 
+            var list_DoanSoRut2 = from loaitietkiem in list_LoaiTietKiem
+                                  join doanhso in list_DoanhSoRut on loaitietkiem.Loaitietkiem equals doanhso.Loaitietkiem into temp
+                                  from doanhso in temp.DefaultIfEmpty()
+                                  select new { Loaitietkiem = loaitietkiem.Loaitietkiem, Tongtienrut = doanhso == null ? 0 : doanhso.Tongtienrut };
 
+            //full outer join 2 list doanh so gui va rut theo loai tiet kiem
+            //full outer join = left join + right join 
+            //left join
+            var leftjoin= from doanhso in list_DoanhSoGui2
+                           join doanhso2 in list_DoanSoRut2 on doanhso.Loaitietkiem equals doanhso2.Loaitietkiem into temp
+                           from doanhso2 in temp.DefaultIfEmpty()
+                           select new { doanhso.Loaitietkiem, doanhso.Tongtiengui, Tongtienrut = doanhso2 == null ? 0 : doanhso2.Tongtienrut };
+            //right join
+            var rightjoin = from doanhso2 in list_DoanSoRut2
+                            join doanhso in list_DoanhSoGui2 on doanhso2.Loaitietkiem equals doanhso.Loaitietkiem into temp
+                            from doanhso in temp.DefaultIfEmpty()
+                            select new { doanhso2.Loaitietkiem, Tongtiengui = doanhso == null ? 0 : doanhso.Tongtiengui, doanhso2.Tongtienrut };
+            //full outer join
+            var list_DoanhSoNgay = leftjoin.Union(rightjoin);
 
-            //join 2 list doanh so gui va rut theo loai tiet kiem
-            var list_DoanhSoNgay = list_DoanhSoGui.Join(list_DoanhSoRut, x => x.Loaitietkiem, y => y.Loaitietkiem, (x, y) => new { x, y })
-                .Select(x => new { x.x.Loaitietkiem, x.x.Tongtiengui, x.y.Tongtienrut, chenhlech= x.x.Tongtiengui - x.y.Tongtienrut });
+            
 
-            var result = list_DoanhSoNgay.ToList<dynamic>();
+            //thêm cột chênh lệch 
+            var BaoCaoDoanhSoNgay = list_DoanhSoNgay.Select(x => new { x.Loaitietkiem, x.Tongtiengui, x.Tongtienrut, Chenhlech = x.Tongtiengui - x.Tongtienrut }).OrderBy(x=>x.Loaitietkiem);
+            var result = BaoCaoDoanhSoNgay.ToList<dynamic>();
             return result;
         }
 
-        List<dynamic> getList_BaoCaoDongMoSoThang(int thang, int nam)
+        public List<dynamic> getList_BaoCaoDongMoSoThang(int thang, int nam)
         {
             DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
             //lay cac so tiet kiem mo trong thang group by ngay mo
@@ -226,10 +263,22 @@ namespace BUS_QLSTK
                 .GroupBy(x => x.Ngaydongso.Value.Date)
                 .Select(x => new { Ngaydongso = x.Key, Soluongdong = x.Count() });
             //join 2 list so tiet kiem mo va dong theo ngay va tinh chenh lech
-            var list_BaoCaoDongMoSoThang = list_SoTietKiemMo.Join(list_SoTietKiemDong, x => x.Ngaymoso, y => y.Ngaydongso, (x, y) => new { x, y })
-                .Select(x => new { x.x.Ngaymoso, x.x.Soluongmo, x.y.Soluongdong, Chenhlech = x.x.Soluongmo - x.y.Soluongdong });
-
-            var result = list_BaoCaoDongMoSoThang.ToList<dynamic>();
+            //outer join= left join + right join
+            //left join
+            var leftjoin = from sotietkienmo in list_SoTietKiemMo
+                           join sotietkiemdong in list_SoTietKiemDong on sotietkienmo.Ngaymoso equals sotietkiemdong.Ngaydongso into temp
+                           from sotietkiemdong in temp.DefaultIfEmpty()
+                           select new { Ngay=sotietkienmo.Ngaymoso, sotietkienmo.Soluongmo, Soluongdong = sotietkiemdong == null ? 0 : sotietkiemdong.Soluongdong };
+            //right join
+            var rightjoin = from sotietkiemdong in list_SoTietKiemDong
+                            join sotietkienmo in list_SoTietKiemMo on sotietkiemdong.Ngaydongso equals sotietkienmo.Ngaymoso into temp
+                            from sotietkienmo in temp.DefaultIfEmpty()
+                            select new { Ngay = sotietkiemdong.Ngaydongso, Soluongmo = sotietkienmo == null ? 0 : sotietkienmo.Soluongmo, sotietkiemdong.Soluongdong };
+            //full outer join
+            var list_BaoCaoDongMoSoThang = leftjoin.Union(rightjoin);
+            //them cot chenh lech
+            var list_BaoCaoDongMoSoThang2 = list_BaoCaoDongMoSoThang.Select(x => new { x.Ngay, x.Soluongmo, x.Soluongdong, Chenhlech = x.Soluongmo - x.Soluongdong }).OrderBy(x=>x.Ngay);
+            var result = list_BaoCaoDongMoSoThang2.ToList<dynamic>();
             return result;
         }
 
