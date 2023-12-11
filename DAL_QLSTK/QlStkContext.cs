@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using DTO_QLSTK;
 
-namespace DAL_QLSTK;
+namespace DTO_QLSTK;
 
 public partial class QlStkContext : DbContext
 {
@@ -82,15 +81,9 @@ public partial class QlStkContext : DbContext
             entity.ToTable("PHIEU_GUI");
 
             entity.Property(e => e.Maphieugui)
-                .HasMaxLength(6)
-                .IsUnicode(false)
-                .IsFixedLength()
+                .ValueGeneratedNever()
                 .HasColumnName("MAPHIEUGUI");
-            entity.Property(e => e.Maso)
-                .HasMaxLength(6)
-                .IsUnicode(false)
-                .IsFixedLength()
-                .HasColumnName("MASO");
+            entity.Property(e => e.Maso).HasColumnName("MASO");
             entity.Property(e => e.Ngaygui)
                 .HasColumnType("date")
                 .HasColumnName("NGAYGUI");
@@ -108,15 +101,9 @@ public partial class QlStkContext : DbContext
             entity.ToTable("PHIEU_RUT");
 
             entity.Property(e => e.Maphieurut)
-                .HasMaxLength(6)
-                .IsUnicode(false)
-                .IsFixedLength()
+                .ValueGeneratedNever()
                 .HasColumnName("MAPHIEURUT");
-            entity.Property(e => e.Maso)
-                .HasMaxLength(6)
-                .IsUnicode(false)
-                .IsFixedLength()
-                .HasColumnName("MASO");
+            entity.Property(e => e.Maso).HasColumnName("MASO");
             entity.Property(e => e.Ngayrut)
                 .HasColumnType("date")
                 .HasColumnName("NGAYRUT");
@@ -134,9 +121,7 @@ public partial class QlStkContext : DbContext
             entity.ToTable("SO_TIET_KIEM");
 
             entity.Property(e => e.Maso)
-                .HasMaxLength(6)
-                .IsUnicode(false)
-                .IsFixedLength()
+                .ValueGeneratedNever()
                 .HasColumnName("MASO");
             entity.Property(e => e.Cccd)
                 .HasMaxLength(12)

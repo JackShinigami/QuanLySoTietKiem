@@ -12,6 +12,10 @@ namespace DAL_QLSTK
         private static DAL_PhieuRut _Instance;
         private QlStkContext context = new QlStkContext();
         
+        private DAL_PhieuRut()
+        {
+        }
+
         public static DAL_PhieuRut Instance
         {
             get

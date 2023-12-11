@@ -12,6 +12,9 @@ namespace DAL_QLSTK
         private static DAL_SoTietKiem _Instance;
         private QlStkContext context = new QlStkContext();
 
+        private DAL_SoTietKiem()
+        {
+        }
         public static DAL_SoTietKiem Instance
         {
             get

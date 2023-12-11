@@ -12,6 +12,10 @@ namespace DAL_QLSTK
         private static DAL_KhachHang _Instance;
         private QlStkContext context = new QlStkContext();
 
+        private DAL_KhachHang()
+        {
+        }
+
         public static DAL_KhachHang Instance
         {
             get

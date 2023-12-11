@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using DAL_QLSTK;
+using DTO_QLSTK;
 
 namespace BUS_QLSTK
 {
@@ -165,7 +167,11 @@ namespace BUS_QLSTK
 
         int getNew_MaSo()
         {
-            return 1;
+            DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
+            var list_SoTietKiem = dal.GetList_SoTietKiem();
+            var max = list_SoTietKiem.Max(x => x.Maso);
+            var res = max + 1;
+            return res;
         }
 
         List<dynamic> getList_SoTietKiem()
