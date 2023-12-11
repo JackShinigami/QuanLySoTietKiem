@@ -24,7 +24,7 @@ namespace BUS_QLSTK
             Config = DAL_Config.Instance;
             KhachHang = DAL_KhachHang.Instance;
             PhieuGui = DAL_PhieuGui.Instance;
-            PhieuRut = new DAL_PhieuRut();
+            PhieuRut = DAL_PhieuRut.Instance;
             SoTietKiem = DAL_SoTietKiem.Instance;
         }
 
