@@ -1,0 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace DTO_QLSTK;
+
+public partial class ConfigToithieu
+{
+    public int? Ngaygui { get; set; }
+
+    public int? Sotiengui { get; set; }
+}
