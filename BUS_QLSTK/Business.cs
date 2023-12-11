@@ -175,19 +175,62 @@ namespace BUS_QLSTK
         }
 
         List<dynamic> getList_SoTietKiem()
-        {
+        {   
+            DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
             return new List<dynamic>();
         }
 
         //todo: đồng nhất kiểu Date
-        List<dynamic> getList_DoanhSoNgay(Date ngay)
+        List<dynamic> getList_DoanhSoNgay(DateTime ngay)
         {
-            return new List<dynamic>();
+            DAL_PhieuGui dal = DAL_PhieuGui.Instance;
+            DAL_PhieuRut dal2 = DAL_PhieuRut.Instance;
+            DAL_SoTietKiem dal3 = DAL_SoTietKiem.Instance;
+            //lay phieu gui theo ngay join voi so tiet kiem de lay loai tiet kiem
+            var list_PhieuGui = dal.GetList_PhieuGui().Where(x => x.Ngaygui == ngay)
+                .Join(dal3.GetList_SoTietKiem(), x => x.Maso, y => y.Maso, (x, y) => new { x, y })
+                .Select(x => new { x.x.Maphieugui, x.x.Ngaygui, x.x.Sotien, x.y.Loaitietkiem });
+            //lay doanh so gui theo ngay group boi loai tiet kiem
+            var list_DoanhSoGui = list_PhieuGui.GroupBy(x => x.Loaitietkiem)
+                .Select(x => new { Loaitietkiem = x.Key, Tongtiengui = x.Sum(y => y.Sotien) });
+
+
+            //lay phieu rut theo ngay join voi so tiet kiem de lay loai tiet kiem
+            var list_PhieuRut = dal2.GetList_PhieuRut().Where(x => x.Ngayrut == ngay)
+                .Join(dal3.GetList_SoTietKiem(), x => x.Maso, y => y.Maso, (x, y) => new { x, y })
+                .Select(x => new { x.x.Maphieurut, x.x.Ngayrut, x.x.Sotien, x.y.Loaitietkiem });
+            //lay doanh so rut theo ngay group boi loai tiet kiem
+            var list_DoanhSoRut = list_PhieuRut.GroupBy(x => x.Loaitietkiem)
+                .Select(x => new { Loaitietkiem = x.Key, Tongtienrut = x.Sum(y => y.Sotien) });
+
+
+
+            //join 2 list doanh so gui va rut theo loai tiet kiem
+            var list_DoanhSoNgay = list_DoanhSoGui.Join(list_DoanhSoRut, x => x.Loaitietkiem, y => y.Loaitietkiem, (x, y) => new { x, y })
+                .Select(x => new { x.x.Loaitietkiem, x.x.Tongtiengui, x.y.Tongtienrut, chenhlech= x.x.Tongtiengui - x.y.Tongtienrut });
+
+            var result = list_DoanhSoNgay.ToList<dynamic>();
+            return result;
         }
 
         List<dynamic> getList_BaoCaoDongMoSoThang(int thang, int nam)
         {
-            return new List<dynamic>();
+            DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
+            //lay cac so tiet kiem mo trong thang group by ngay mo
+            var list_SoTietKiemMo = dal.GetList_SoTietKiem().Where(x => x.Ngaymoso.Value.Month == thang && x.Ngaymoso.Value.Year == nam)
+                .GroupBy(x => x.Ngaymoso.Value.Date)
+                .Select(x => new { Ngaymoso = x.Key, Soluongmo = x.Count() });
+
+            //lay cac so tiet kiem dong trong thang group by ngay dong
+            var list_SoTietKiemDong = dal.GetList_SoTietKiem().Where(x => x.Ngaydongso.Value.Month == thang && x.Ngaydongso.Value.Year == nam)
+                .GroupBy(x => x.Ngaydongso.Value.Date)
+                .Select(x => new { Ngaydongso = x.Key, Soluongdong = x.Count() });
+            //join 2 list so tiet kiem mo va dong theo ngay va tinh chenh lech
+            var list_BaoCaoDongMoSoThang = list_SoTietKiemMo.Join(list_SoTietKiemDong, x => x.Ngaymoso, y => y.Ngaydongso, (x, y) => new { x, y })
+                .Select(x => new { x.x.Ngaymoso, x.x.Soluongmo, x.y.Soluongdong, Chenhlech = x.x.Soluongmo - x.y.Soluongdong });
+
+            var result = list_BaoCaoDongMoSoThang.ToList<dynamic>();
+            return result;
         }
 
         List<LoaiTietKiem> getList_LoaiTietKiem()
