@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-
-namespace DTO_QLSTK;
+using DTO_QLSTK;
+namespace DAL_QLSTK;
 
 public partial class QlStkContext : DbContext
 {
