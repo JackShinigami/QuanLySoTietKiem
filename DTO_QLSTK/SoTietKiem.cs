@@ -5,7 +5,7 @@ namespace DTO_QLSTK;
 
 public partial class SoTietKiem
 {
-    public string Maso { get; set; } = null!;
+    public int Maso { get; set; }
 
     public string? Cccd { get; set; }
 
@@ -13,7 +13,7 @@ public partial class SoTietKiem
 
     public DateTime? Ngaydongso { get; set; }
 
-    public int? Sodu { get; set; }
+    public long? Sodu { get; set; }
 
     public int? Loaitietkiem { get; set; }
 
@@ -23,7 +23,7 @@ public partial class SoTietKiem
 
     public int? Songayduocrut { get; set; }
 
-    public int? Tienguitoithieu { get; set; }
+    public long? Tienguitoithieu { get; set; }
 
     public virtual KhachHang? CccdNavigation { get; set; }
 

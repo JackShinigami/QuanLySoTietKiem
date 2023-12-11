@@ -5,13 +5,13 @@ namespace DTO_QLSTK;
 
 public partial class PhieuGui
 {
-    public string Maphieugui { get; set; } = null!;
+    public int Maphieugui { get; set; }
 
-    public string? Maso { get; set; }
+    public int? Maso { get; set; }
 
     public DateTime? Ngaygui { get; set; }
 
-    public int? Sotien { get; set; }
+    public long? Sotien { get; set; }
 
     public virtual SoTietKiem? MasoNavigation { get; set; }
 }

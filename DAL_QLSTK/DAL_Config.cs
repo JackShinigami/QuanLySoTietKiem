@@ -59,16 +59,16 @@ namespace DAL_QLSTK
             context.SaveChanges();
         }
 
-        public int Get_SoTienGuiToiThieu()
+        public long Get_SoTienGuiToiThieu()
         {
             List<ConfigToithieu> configToithieus = context.ConfigToithieus.ToList();
             if (configToithieus.Count == 0)
                 return 0;
 
-            return (int)configToithieus[0].Sotiengui;
+            return (long)configToithieus[0].Sotiengui;
         }
 
-        public void Update_SoTienGuiToiThieu(int sotiengui)
+        public void Update_SoTienGuiToiThieu(long sotiengui)
         {
             List<ConfigToithieu> configToithieus = context.ConfigToithieus.ToList();
             if (configToithieus.Count == 0)

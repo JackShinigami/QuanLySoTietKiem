@@ -7,5 +7,5 @@ public partial class ConfigToithieu
 {
     public int? Ngaygui { get; set; }
 
-    public int? Sotiengui { get; set; }
+    public long? Sotiengui { get; set; }
 }
