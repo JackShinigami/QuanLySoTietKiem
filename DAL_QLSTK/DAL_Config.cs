@@ -13,6 +13,10 @@ namespace DAL_QLSTK
         private static DAL_Config _Instance;
         private QlStkContext context = new QlStkContext();
 
+        private DAL_Config()
+        {
+        }
+
         public static DAL_Config Instance
         {
             get
