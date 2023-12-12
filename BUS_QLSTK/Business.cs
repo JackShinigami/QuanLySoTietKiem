@@ -1,6 +1,4 @@
 ﻿
-using DAL_QLSTK;
-using DTO_QLSTK;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
