@@ -85,6 +85,11 @@ namespace BUS_QLSTK
             {
                 try
                 {
+                    try
+                    {
+                        KhachHang.Add_KhachHang(kh);
+                    }
+                    catch (Exception e) { }
                     SoTietKiem.Add_SoTietKiem(soTietKiem);
                 }
                 catch (Exception e)
@@ -102,11 +107,94 @@ namespace BUS_QLSTK
                 phieuGui.Sotien = soTien;
                 phieuGui.Maphieugui = getNew_MaPhieuGui();
                 PhieuGui.Add_PhieuGui(phieuGui);
-                KhachHang.Add_KhachHang(kh);
+                
             }
               
 
             return result;  
+        }
+
+        public long? get_SoTienCoTheRut(int maSo, string CCCD)
+        {
+            long? result = 0;
+
+            var listSoTietKiem = SoTietKiem.GetList_SoTietKiem();
+
+            SoTietKiem? soTietKiem = null;
+
+            foreach (var soTK in listSoTietKiem)
+            {
+                if (soTK.Maso == maSo)
+                {
+
+                    soTietKiem = soTK;
+
+                    break;
+                }
+            }
+
+            if (soTietKiem == null)
+            {
+                throw new Exception("Không tìm thấy sổ tiết kiệm");
+            }
+
+            if (soTietKiem.Trangthai == 0)
+            {
+
+                throw new Exception("Sổ đã đóng");
+            }
+            else if(soTietKiem.Cccd != CCCD)
+            {
+                throw new Exception("Số CCCD không đúng");
+            }
+
+            else if (soTietKiem.Loaitietkiem == 0)
+            {
+                var soNgayGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days;
+                var listPhieuRut = PhieuRut.GetList_PhieuRut();
+
+                DateTime? latestDate = DateTime.MinValue;
+
+                foreach (var phieuRut in listPhieuRut)
+                {
+                    if (phieuRut.Maso == maSo)
+                    {
+                        latestDate = phieuRut?.Ngayrut > latestDate ? phieuRut.Ngayrut : latestDate;
+                    }
+                }
+
+                var soThangGui = (DateTime.Now - latestDate)?.Days / 30;
+
+                if (latestDate != DateTime.MinValue)
+                {
+                    var soThangDaTinhLai = (latestDate - soTietKiem.Ngaymoso)?.Days / 30;
+
+                    soThangGui -= soThangDaTinhLai;
+                }
+
+                soTietKiem.Sodu += (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soThangGui);
+
+                result = - soTietKiem.Sodu;
+            }
+
+            else
+            {
+                var soNgayGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days;
+                var soThangGui = soNgayGui / 30;
+
+                if (soThangGui < soTietKiem.Loaitietkiem)
+                {
+                    throw new Exception("Sổ chưa đủ kỳ hạn");
+                }
+                else
+                {
+                    var soLanDaoHan = soThangGui / soTietKiem.Loaitietkiem;
+                    result = (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soLanDaoHan * soTietKiem.Loaitietkiem + soTietKiem.Sodu);
+
+                }
+            }
+
+            return result;
         }
 
 
@@ -115,38 +203,51 @@ namespace BUS_QLSTK
             var result = true;
 
             var listSoTietKiem = SoTietKiem.GetList_SoTietKiem();
+            SoTietKiem? soTK = null;
 
             foreach (var soTietKiem in listSoTietKiem)
             {
                 if (soTietKiem.Maso == maSo)
                 {
-                    if(soTietKiem.Trangthai == 0)
-                    {
-                        result = false;
-                        throw new Exception("Sổ đã đóng");
-                    }
-
-                    else if(soTietKiem.Loaitietkiem != 0)
-                    {
-                        result = false;
-                        throw new Exception("Sổ không phải loại không kỳ hạn");
-                    }
-
-                    else if(soTien < soTietKiem.Tienguitoithieu)
-                    {
-                        result = false;
-                        throw new Exception("Số tiền gửi không đủ");
-                    }
-
-                    else
-                    {
-                        soTietKiem.Sodu += soTien;
-                        SoTietKiem.Update_SoTietKiem(soTietKiem);
-                        
-                    }
+                    soTK = soTietKiem;
 
                     break;
                 }
+            }
+            if(soTK == null)
+            {
+                result =false;
+                throw new Exception("Không tìm thấy sổ tiết kiệm");
+            }
+
+            if (soTK.Trangthai == 0)
+            {
+                result = false;
+                throw new Exception("Sổ đã đóng");
+            }
+
+            else if (soTK.Loaitietkiem != 0)
+            {
+                result = false;
+                throw new Exception("Sổ không phải loại không kỳ hạn");
+            }
+
+            else if (soTien < soTK.Tienguitoithieu)
+            {
+                result = false;
+                throw new Exception("Số tiền gửi không đủ");
+            }
+            else if (CCCD != soTK.Cccd)
+            {
+                result = false;
+                throw new Exception("Số CCCD không đúng");
+            }
+
+            else
+            {
+                soTK.Sodu += soTien;
+                SoTietKiem.Update_SoTietKiem(soTK);
+
             }
 
             if (result)
@@ -182,11 +283,21 @@ namespace BUS_QLSTK
                 }
             }
 
+            if(soTietKiem == null)
+            {
+                result = false;
+                throw new Exception("Không tìm thấy sổ tiết kiệm");
+            }
 
             if (soTietKiem.Trangthai == 0)
             {
                 result = false;
                 throw new Exception("Sổ đã đóng");
+            }
+            else if(soTietKiem.Cccd != CCCD)
+            {
+                result = false;
+                throw new Exception("Số CCCD không đúng");
             }
 
             else if (soTietKiem.Loaitietkiem == 0)
@@ -288,6 +399,11 @@ namespace BUS_QLSTK
         {
             DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
             var list_SoTietKiem = dal.GetList_SoTietKiem();
+
+            if(list_SoTietKiem.Count == 0)
+            {
+                return 1000001;
+            }
             var max = list_SoTietKiem.Max(x => x.Maso);
             var res = max + 1;
             return res;
@@ -296,6 +412,10 @@ namespace BUS_QLSTK
         public int getNew_MaPhieuGui()
         {
             var list_PhieuGui = PhieuGui.GetList_PhieuGui();
+            if (list_PhieuGui.Count == 0)
+            {
+                return 1000001;
+            }
             var max = list_PhieuGui.Max(x => x.Maphieugui);
             var res = max + 1;
             return res;
@@ -305,6 +425,10 @@ namespace BUS_QLSTK
         public int getNew_MaPhieuRut()
         {
             var list_PhieuRut = PhieuRut.GetList_PhieuRut();
+            if (list_PhieuRut.Count == 0)
+            {
+                return 1000001;
+            }
             var max = list_PhieuRut.Max(x => x.Maphieurut);
             var res = max + 1;
             return res;
@@ -498,6 +622,8 @@ namespace BUS_QLSTK
         {
             return Config.Get_SoTienGuiToiThieu();
         }
+
+
 
     }
 
