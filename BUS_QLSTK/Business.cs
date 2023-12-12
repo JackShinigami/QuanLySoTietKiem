@@ -453,8 +453,8 @@ namespace BUS_QLSTK
             var list_LoaiTietKiem2 = dal3.GetList_SoTietKiem().Select(x => new { Loaitietkiem= (int)x.Loaitietkiem }).Distinct();
             //lấy danh sách các loại tiết kiệm từ trước tới nay
             var list_LoaiTietKiem=list_LoaiTietKiem1.Union(list_LoaiTietKiem2);
-
-
+            
+            
 
             //lay phieu gui theo ngay join voi so tiet kiem de lay loai tiet kiem
             var list_PhieuGui = dal.GetList_PhieuGui().Where(x => x.Ngaygui == ngay)
@@ -540,44 +540,50 @@ namespace BUS_QLSTK
             return result;
         }
 
-        public List<LoaiTietKiem> getList_LoaiTietKiem()
-        {
-            return Config.GetList_LoaiTietKiem();
+        List<LoaiTietKiem> getList_LoaiTietKiem()
+        {   
+            DAL_Config dal = DAL_Config.Instance;
+            var list_LoaiTietKiem = dal.GetList_LoaiTietKiem();
+            return list_LoaiTietKiem;
         }
 
-        public bool add_LoaiTietKiem(int kyHan, double laiSuat)
-        {
-            var result = true;
-
-            var listLoaiTietKiem = Config.GetList_LoaiTietKiem();
-
-            foreach(var loaiTietKiem in listLoaiTietKiem)
+        bool add_LoaiTietKiem(int kyHan, double laiSuat)
+        {   
+            bool result = true;
+            //validate
+            if (kyHan < 0)
             {
-                if(loaiTietKiem.Kyhan == kyHan)
-                {
-                    result = false;
-                    throw new Exception("Loại tiết kiệm đã tồn tại");
-                }
+                result = false;
+                throw new Exception("Kỳ hạn không hợp lệ");
             }
-
-            if(result)
+            DAL_Config dal = DAL_Config.Instance;
+            LoaiTietKiem add = new LoaiTietKiem();
+            add.Kyhan = kyHan;
+            add.Laisuat = laiSuat;
+            try
             {
-                var loaiTietKiem = new LoaiTietKiem();
-                loaiTietKiem.Kyhan = kyHan;
-                loaiTietKiem.Laisuat = laiSuat;
-                Config.Add_LoaiTietKiem(loaiTietKiem);
+                dal.Add_LoaiTietKiem(add);
             }
-
+            catch (Exception e)
+            {
+                result = false;
+            }
             return result;
         }
 
-
-        public bool delete_LoaiTietKiem(LoaiTietKiem loaiTietKiem)
-        {
-            var result = true;
-            
-            Config.Delete_LoaiTietKiem(loaiTietKiem);
-
+       
+        bool delete_LoaiTietKiem(LoaiTietKiem loaiTietKiem)
+        {   
+            bool result = true;
+            DAL_Config dal = DAL_Config.Instance;
+            try
+            {
+                dal.Delete_LoaiTietKiem(loaiTietKiem);
+            }
+            catch (Exception e)
+            {
+                result = false;
+            }
             return result;
         }
 
