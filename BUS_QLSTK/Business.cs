@@ -540,14 +540,14 @@ namespace BUS_QLSTK
             return result;
         }
 
-        List<LoaiTietKiem> getList_LoaiTietKiem()
+        public List<LoaiTietKiem> getList_LoaiTietKiem()
         {   
             DAL_Config dal = DAL_Config.Instance;
             var list_LoaiTietKiem = dal.GetList_LoaiTietKiem();
             return list_LoaiTietKiem;
         }
 
-        bool add_LoaiTietKiem(int kyHan, double laiSuat)
+        public bool add_LoaiTietKiem(int kyHan, double laiSuat)
         {   
             bool result = true;
             //validate
@@ -572,7 +572,7 @@ namespace BUS_QLSTK
         }
 
        
-        bool delete_LoaiTietKiem(LoaiTietKiem loaiTietKiem)
+        public bool delete_LoaiTietKiem(LoaiTietKiem loaiTietKiem)
         {   
             bool result = true;
             DAL_Config dal = DAL_Config.Instance;
