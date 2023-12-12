@@ -195,8 +195,8 @@ namespace BUS_QLSTK
             var list_LoaiTietKiem2 = dal3.GetList_SoTietKiem().Select(x => new { Loaitietkiem= (int)x.Loaitietkiem }).Distinct();
             //lấy danh sách các loại tiết kiệm từ trước tới nay
             var list_LoaiTietKiem=list_LoaiTietKiem1.Union(list_LoaiTietKiem2);
-
-
+            
+            
 
             //lay phieu gui theo ngay join voi so tiet kiem de lay loai tiet kiem
             var list_PhieuGui = dal.GetList_PhieuGui().Where(x => x.Ngaygui == ngay)
@@ -283,19 +283,50 @@ namespace BUS_QLSTK
         }
 
         List<LoaiTietKiem> getList_LoaiTietKiem()
-        {
-            return new List<LoaiTietKiem>();
+        {   
+            DAL_Config dal = DAL_Config.Instance;
+            var list_LoaiTietKiem = dal.GetList_LoaiTietKiem();
+            return list_LoaiTietKiem;
         }
 
         bool add_LoaiTietKiem(int kyHan, double laiSuat)
-        {
-            return true;
+        {   
+            bool result = true;
+            //validate
+            if (kyHan < 0)
+            {
+                result = false;
+                throw new Exception("Kỳ hạn không hợp lệ");
+            }
+            DAL_Config dal = DAL_Config.Instance;
+            LoaiTietKiem add = new LoaiTietKiem();
+            add.Kyhan = kyHan;
+            add.Laisuat = laiSuat;
+            try
+            {
+                dal.Add_LoaiTietKiem(add);
+            }
+            catch (Exception e)
+            {
+                result = false;
+            }
+            return result;
         }
 
        
         bool delete_LoaiTietKiem(LoaiTietKiem loaiTietKiem)
-        {
-            return true;
+        {   
+            bool result = true;
+            DAL_Config dal = DAL_Config.Instance;
+            try
+            {
+                dal.Delete_LoaiTietKiem(loaiTietKiem);
+            }
+            catch (Exception e)
+            {
+                result = false;
+            }
+            return result;
         }
 
         bool update_NgayGuiToiThieu(int ngay)
