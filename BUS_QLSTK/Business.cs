@@ -153,6 +153,12 @@ namespace BUS_QLSTK
                 var soNgayGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days;
                 var listPhieuRut = PhieuRut.GetList_PhieuRut();
 
+
+                if(soNgayGui < soTietKiem.Songayduocrut)
+                {
+                    throw new Exception("Sổ chưa đủ ngày gửi");
+                }
+
                 DateTime? latestDate = DateTime.MinValue;
 
                 foreach (var phieuRut in listPhieuRut)
@@ -163,7 +169,7 @@ namespace BUS_QLSTK
                     }
                 }
 
-                var soThangGui = (DateTime.Now - latestDate)?.Days / 30;
+                var soThangGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days / 30;
 
                 if (latestDate != DateTime.MinValue)
                 {
@@ -172,9 +178,8 @@ namespace BUS_QLSTK
                     soThangGui -= soThangDaTinhLai;
                 }
 
-                soTietKiem.Sodu += (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soThangGui);
+                result = -(soTietKiem.Sodu + (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soThangGui));
 
-                result = - soTietKiem.Sodu;
             }
 
             else
@@ -323,7 +328,7 @@ namespace BUS_QLSTK
                         }
                     }
 
-                    var soThangGui = (DateTime.Now - latestDate)?.Days / 30;
+                    var soThangGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days / 30;
 
                     if (latestDate != DateTime.MinValue)
                     {

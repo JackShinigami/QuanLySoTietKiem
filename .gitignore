@@ -398,3 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 /UI for test/UI for test.csproj
 /UI for test
+/UI for test/UI for test.csproj
+/.gitignore
