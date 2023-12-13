@@ -30,11 +30,17 @@ namespace DAL_QLSTK
 
         public List<PhieuGui> GetList_PhieuGui()
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             return context.PhieuGuis.ToList();
         }
 
         public void Add_PhieuGui(PhieuGui pg)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             if (context.PhieuGuis.Find(pg.Maphieugui) != null)
                 throw new Exception("Phiếu gửi đã tồn tại");
 

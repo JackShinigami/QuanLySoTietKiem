@@ -30,19 +30,28 @@ namespace DAL_QLSTK
         
         public List<KhachHang> GetList_KhachHang()
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             return context.KhachHangs.ToList();
         }
 
         public void Add_KhachHang(KhachHang kh)
         {
-            if(context.KhachHangs.Find(kh.Cccd) != null)
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
+            if (context.KhachHangs.Find(kh.Cccd) != null)
                 throw new Exception("Khách hàng đã tồn tại");
             context.KhachHangs.Add(kh);
             context.SaveChanges();
         }
 
         public KhachHang Find_KhachHang(string cccd)
-        { 
+        {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             return context.KhachHangs.Find(cccd);
         }
     }

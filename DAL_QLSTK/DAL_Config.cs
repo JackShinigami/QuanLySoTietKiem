@@ -31,11 +31,17 @@ namespace DAL_QLSTK
 
         public List<LoaiTietKiem> GetList_LoaiTietKiem()
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             return context.LoaiTietKiems.ToList();
         }
 
         public void Add_LoaiTietKiem(LoaiTietKiem ltk)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             if (context.LoaiTietKiems.Find(ltk.Kyhan) != null)
                 throw new Exception("Loại tiết kiệm đã tồn tại");
 
@@ -45,6 +51,9 @@ namespace DAL_QLSTK
 
         public void Delete_LoaiTietKiem(LoaiTietKiem ltk)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             LoaiTietKiem loaiTietKiem = context.LoaiTietKiems.Find(ltk.Kyhan);
             if(loaiTietKiem == null)
                 throw new Exception("Loại tiết kiệm không tồn tại");
@@ -55,6 +64,9 @@ namespace DAL_QLSTK
 
         public void Update_LoaiTietKiem(LoaiTietKiem ltk)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             LoaiTietKiem loaiTietKiem = context.LoaiTietKiems.Find(ltk.Kyhan);
             if (loaiTietKiem == null)
                 throw new Exception("Loại tiết kiệm không tồn tại");
@@ -65,6 +77,9 @@ namespace DAL_QLSTK
 
         public long Get_SoTienGuiToiThieu()
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             List<ConfigToithieu> configToithieus = context.ConfigToithieus.ToList();
             if (configToithieus.Count == 0)
                 return 0;
@@ -74,6 +89,9 @@ namespace DAL_QLSTK
 
         public void Update_SoTienGuiToiThieu(long sotiengui)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             List<ConfigToithieu> configToithieus = context.ConfigToithieus.ToList();
             if (configToithieus.Count == 0)
             {
@@ -90,6 +108,9 @@ namespace DAL_QLSTK
 
         public int Get_SoNgayGuiToiThieu()
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             List<ConfigToithieu> configToithieus = context.ConfigToithieus.ToList();
             if (configToithieus.Count == 0)
                 return 0;
@@ -99,6 +120,9 @@ namespace DAL_QLSTK
 
         public void Update_SoNgayGuiToiThieu(int ngaygui)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             List<ConfigToithieu> configToithieus = context.ConfigToithieus.ToList();
             if (configToithieus.Count == 0)
             {

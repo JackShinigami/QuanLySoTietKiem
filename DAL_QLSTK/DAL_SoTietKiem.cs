@@ -29,11 +29,16 @@ namespace DAL_QLSTK
 
         public List<SoTietKiem> GetList_SoTietKiem()
         {
+            if(!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
             return context.SoTietKiems.ToList();
         }
 
         public void Add_SoTietKiem(SoTietKiem stk)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             if (context.SoTietKiems.Find(stk.Maso) != null)
                 throw new Exception("Sổ tiết kiệm đã tồn tại");
 
@@ -43,6 +48,9 @@ namespace DAL_QLSTK
 
         public void Update_SoTietKiem(SoTietKiem stk)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             SoTietKiem soTietKiem = context.SoTietKiems.Find(stk.Maso);
             if(soTietKiem == null)
                 throw new Exception("Không tìm thấy sổ tiết kiệm");

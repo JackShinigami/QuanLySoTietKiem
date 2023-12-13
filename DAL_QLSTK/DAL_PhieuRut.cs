@@ -30,11 +30,17 @@ namespace DAL_QLSTK
 
         public List<PhieuRut> GetList_PhieuRut()
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             return context.PhieuRuts.ToList();
         }
 
         public void Add_PhieuRut(PhieuRut pr)
         {
+            if (!context.Database.CanConnect())
+                throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
+
             if (context.PhieuRuts.Find(pr.Maphieurut) != null)
                 throw new Exception("Phiếu rút đã tồn tại");
 
