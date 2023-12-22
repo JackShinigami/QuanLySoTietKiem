@@ -513,16 +513,16 @@ namespace BUS_QLSTK
             return result;
         }
 
-        public List<dynamic> getList_BaoCaoDongMoSoThang(int thang, int nam)
+        public List<dynamic> getList_BaoCaoDongMoSoThang(int thang, int nam, int loaitk)
         {
             DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
             //lay cac so tiet kiem mo trong thang group by ngay mo
-            var list_SoTietKiemMo = dal.GetList_SoTietKiem().Where(x => x.Ngaymoso.Value.Month == thang && x.Ngaymoso.Value.Year == nam)
+            var list_SoTietKiemMo = dal.GetList_SoTietKiem().Where(x => x.Ngaymoso.Value.Month == thang && x.Ngaymoso.Value.Year == nam && x.Loaitietkiem==loaitk)
                 .GroupBy(x => x.Ngaymoso.Value.Date)
                 .Select(x => new { Ngaymoso = x.Key, Soluongmo = x.Count() });
 
             //lay cac so tiet kiem dong trong thang group by ngay dong
-            var list_SoTietKiemDong = dal.GetList_SoTietKiem().Where(x => x.Ngaydongso.Value.Month == thang && x.Ngaydongso.Value.Year == nam)
+            var list_SoTietKiemDong = dal.GetList_SoTietKiem().Where(x => x.Ngaydongso.Value.Month == thang && x.Ngaydongso.Value.Year == nam && x.Loaitietkiem == loaitk)
                 .GroupBy(x => x.Ngaydongso.Value.Date)
                 .Select(x => new { Ngaydongso = x.Key, Soluongdong = x.Count() });
             //join 2 list so tiet kiem mo va dong theo ngay va tinh chenh lech

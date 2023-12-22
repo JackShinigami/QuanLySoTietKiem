@@ -29,7 +29,7 @@ namespace Test
             //var baocaodoanhso = bus.getList_DoanhSoNgay(ngay);
             //MessageBox.Show(baocaodoanhso.Count.ToString());
 
-            var baocaodongmosothang = bus.getList_BaoCaoDongMoSoThang(1,2023);
+            var baocaodongmosothang = bus.getList_BaoCaoDongMoSoThang(1,2023,1);
 
         }
     }
