@@ -40,12 +40,12 @@ namespace BUS_QLSTK
                            
             }
         }
-        public bool create_SoTietKiem(int maSo, string CCCD, string tenKH, string diaChi, int kyHan, long soTien)
+        public bool create_SoTietKiem(int maSo, string CCCD, string tenKH, string diaChi, int kyHan, long soTien, DateTime ngayMoSo)
         {
             var soTietKiem = new SoTietKiem();
             soTietKiem.Maso = maSo;
             soTietKiem.Cccd = CCCD;
-            var currentDateTime = DateTime.Now;
+            var currentDateTime = ngayMoSo;
             soTietKiem.Ngaymoso = currentDateTime;
             soTietKiem.Ngaydongso = null;
             soTietKiem.Sodu = soTien;
@@ -103,7 +103,7 @@ namespace BUS_QLSTK
             {
                 var phieuGui = new PhieuGui();
                 phieuGui.Maso = soTietKiem.Maso;
-                phieuGui.Ngaygui = DateTime.Now;
+                phieuGui.Ngaygui = ngayMoSo;
                 phieuGui.Sotien = soTien;
                 phieuGui.Maphieugui = getNew_MaPhieuGui();
                 PhieuGui.Add_PhieuGui(phieuGui);
@@ -203,7 +203,7 @@ namespace BUS_QLSTK
         }
 
 
-        public bool create_PhieuGui(int maSo, string CCCD, long soTien)
+        public bool create_PhieuGui(int maSo, string CCCD, long soTien, DateTime ngayGui)
         {
             var result = true;
 
@@ -259,7 +259,7 @@ namespace BUS_QLSTK
             {
                 var phieuGui = new PhieuGui();
                 phieuGui.Maso = maSo;
-                phieuGui.Ngaygui = DateTime.Now;
+                phieuGui.Ngaygui = ngayGui;
                 phieuGui.Sotien = soTien;
                 phieuGui.Maphieugui = getNew_MaPhieuGui();
 
@@ -269,7 +269,7 @@ namespace BUS_QLSTK
             return result;
         }
 
-        public bool create_PhieuRut(int maSo, string CCCD, long? soTien)
+        public bool create_PhieuRut(int maSo, string CCCD, long? soTien, DateTime ngayRut)
         {
             var result = true;
 
@@ -356,7 +356,7 @@ namespace BUS_QLSTK
 
                         var phieuRut = new PhieuRut();
                         phieuRut.Maso = maSo;
-                        phieuRut.Ngayrut = DateTime.Now;
+                        phieuRut.Ngayrut = ngayRut;
                         phieuRut.Sotien = soTien;
                         phieuRut.Maphieurut = getNew_MaPhieuRut();
                         PhieuRut.Add_PhieuRut(phieuRut);
@@ -382,12 +382,12 @@ namespace BUS_QLSTK
                     soTien = soTietKiem.Sodu;
                     soTietKiem.Sodu = 0;
                     soTietKiem.Trangthai = 0;
-                    soTietKiem.Ngaydongso = DateTime.Now;
+                    soTietKiem.Ngaydongso = ngayRut;
                     SoTietKiem.Update_SoTietKiem(soTietKiem);
 
                     var phieuRut = new PhieuRut();
                     phieuRut.Maso = maSo;
-                    phieuRut.Ngayrut = DateTime.Now;
+                    phieuRut.Ngayrut = ngayRut;
                     phieuRut.Sotien = soTien;
                     phieuRut.Maphieurut = getNew_MaPhieuRut();
                     PhieuRut.Add_PhieuRut(phieuRut);

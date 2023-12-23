@@ -2,6 +2,7 @@
 using DTO_QLSTK;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,10 +44,11 @@ namespace UI_for_test
             var cccd = txtCCCD.Text;
             var tenKH = txtKhachHang.Text;
             var diaChi = txtDiaChi.Text;
+            var ngayMoSo = DateTime.ParseExact(txtNgayMoSo.Text.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             try
             {
-                result = bus.create_SoTietKiem(maSo, cccd, tenKH, diaChi, kyHan,  soTien);
+                result = bus.create_SoTietKiem(maSo, cccd, tenKH, diaChi, kyHan,  soTien, ngayMoSo);
             }
             catch (Exception ex)
             {
@@ -74,7 +76,6 @@ namespace UI_for_test
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
             txtNgayMoSo.Text = $"{day}/{month}/{year}";
-            txtNgayMoSo.IsReadOnly = true;
 
             cb_LoaiTietKiem.ItemsSource = Business.Instance.getList_LoaiTietKiem();
             cb_LoaiTietKiem.SelectedIndex = 0;

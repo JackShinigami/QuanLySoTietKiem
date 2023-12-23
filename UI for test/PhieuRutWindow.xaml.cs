@@ -1,6 +1,7 @@
 ﻿using BUS_QLSTK;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,13 +40,14 @@ namespace UI_for_test
             var maSo = int.Parse(txtMaSo.Text);
             var soTienRut = long.Parse(txtSoTien.Text);
             var cccd = txtKhachHang.Text;
+            var ngayRut  = DateTime.ParseExact(txtNgaRut.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             Business bus = Business.Instance;
 
             bool result = false;
             try
             {
-                result = bus.create_PhieuRut(maSo, cccd, soTienRut);
+                result = bus.create_PhieuRut(maSo, cccd, soTienRut, ngayRut);
             }
 
             catch (Exception ex)
