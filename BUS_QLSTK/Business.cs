@@ -350,7 +350,7 @@ namespace BUS_QLSTK
                         if(soTietKiem.Sodu == 0)
                         {
                             soTietKiem.Trangthai = 0;
-                            soTietKiem.Ngaydongso = DateTime.Now;
+                            soTietKiem.Ngaydongso = ngayRut;
                         }
                         SoTietKiem.Update_SoTietKiem(soTietKiem);
 
