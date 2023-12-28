@@ -45,8 +45,7 @@ namespace BUS_QLSTK
             var soTietKiem = new SoTietKiem();
             soTietKiem.Maso = maSo;
             soTietKiem.Cccd = CCCD;
-            var currentDateTime = ngayMoSo;
-            soTietKiem.Ngaymoso = currentDateTime;
+            soTietKiem.Ngaymoso = ngayMoSo;
             soTietKiem.Ngaydongso = null;
             soTietKiem.Sodu = soTien;
             soTietKiem.Loaitietkiem = kyHan;
@@ -143,7 +142,7 @@ namespace BUS_QLSTK
 
                 throw new Exception("Sổ đã đóng");
             }
-            else if(soTietKiem.Cccd != CCCD)
+            else if(soTietKiem.Cccd.Trim() != CCCD.Trim())
             {
                 throw new Exception("Số CCCD không đúng");
             }
@@ -242,7 +241,7 @@ namespace BUS_QLSTK
                 result = false;
                 throw new Exception("Số tiền gửi không đủ");
             }
-            else if (CCCD != soTK.Cccd)
+            else if (CCCD.Trim() != soTK.Cccd.Trim())
             {
                 result = false;
                 throw new Exception("Số CCCD không đúng");
@@ -299,7 +298,7 @@ namespace BUS_QLSTK
                 result = false;
                 throw new Exception("Sổ đã đóng");
             }
-            else if(soTietKiem.Cccd != CCCD)
+            else if(soTietKiem.Cccd.Trim() != CCCD.Trim())
             {
                 result = false;
                 throw new Exception("Số CCCD không đúng");
