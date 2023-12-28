@@ -20,5 +20,48 @@ namespace GUI_QLSTK
         {
             InitializeComponent();
         }
+
+        private void createBookButton_Click(object sender, RoutedEventArgs e)
+        {
+            CreateBookWindow createBookWindow = new CreateBookWindow();
+            createBookWindow.ShowDialog();
+        }
+
+        private void createDepositButton_Click(object sender, RoutedEventArgs e)
+        {
+            DepositFormWindow depositFormWindow = new DepositFormWindow();
+            depositFormWindow.ShowDialog();
+        }
+
+        private void createWithdrawButton_Click(object sender, RoutedEventArgs e)
+        {
+            WithdrawFormWindow withdrawFormWindow = new WithdrawFormWindow();
+            withdrawFormWindow.ShowDialog();
+
+        }
+
+        private void lookUpBookButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        private void reportMonthButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void reportDayButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        private void manageRegulationButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
     }
 }

@@ -1,0 +1,309 @@
+﻿<Window
+    x:Class="GUI_QLSTK.WithdrawFormWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GUI_QLSTK"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    Title="Phiếu rút tiền"
+    Loaded="Window_Loaded"
+    Height="540"
+    Width="960">
+
+
+    <Grid
+        Background="#d9d9d9">
+
+
+        <!--region Grid 2x(5 + 1)-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="0.5*" />
+            <ColumnDefinition
+                Width="0.5*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="2.5*" />
+        </Grid.RowDefinitions>
+
+        <!--endregion-->
+
+        <!--#region Tiêu đề-->
+
+        <Border
+            Margin="10"
+            Height="50"
+            Background="#fff"
+            CornerRadius="10"
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.ColumnSpan="2">
+
+            <Label
+                Content="Phiếu rút tiền"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="30"
+                FontWeight="Bold"
+                Foreground="Black" />
+        </Border>
+        <!--#endregion-->
+
+        <!--region Nút thay đổi qui định-->
+        <Button
+            Grid.Column="1"
+            Grid.Row="1"
+            Content="Quản lí quy định"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Width="300"
+            Height="50"
+            Margin="0 0 30 0"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="manageRegulationButton_Click" />
+
+        <!--#endregion-->
+
+        <!--#region Mã sổ-->
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="0"
+            Grid.Row="2">
+
+            <Label
+                Content="Mã sổ:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="bookIdTextBox"
+                Margin="5"
+                d:Text="1234"
+                FontSize="20"
+                Style="{DynamicResource UnderlinedFocusTextBox}" />
+        </DockPanel>
+
+        <!--#endregion-->
+
+        <!--#region Khách hàng-->
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="1"
+            Grid.Row="2">
+
+            <Label
+                Content="CMND/CCCD:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="customerIDTextBox"
+                Margin="5"
+                d:Text="321456789"
+                FontSize="20"
+                Style="{DynamicResource UnderlinedFocusTextBox}" />
+        </DockPanel>
+        <!--#endregion-->
+
+        <!--#region Ngày gửi-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="0"
+            Grid.Row="3">
+
+            <Label
+                Content="Ngày rút:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+
+            <DatePicker
+                x:Name="withdrawDateDatePicker"
+                Margin="5"
+                FontSize="20"
+                Background="White"
+                BorderThickness="0"
+                d:SelectedDate="1/15/2023"
+                Text="{Binding WithdrawDate, StringFormat=dd/MM/yyyy}"
+                Style="{DynamicResource DatePickerStyle}" />
+        </DockPanel>
+
+        <!--#endregion-->
+
+        <!--region Số tiền gửi-->
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="1"
+            Grid.Row="3">
+
+            <Label
+                Content="Số tiền rút:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="withdrawTextBox"
+                Margin="5"
+                d:Text="1000000"
+                FontSize="20"
+                IsEnabled="False"
+                Style="{DynamicResource UnderlinedFocusTextBox}" />
+        </DockPanel>
+        <!--endregion-->
+        
+        <!--#region Nút Kiểm tra t.tin-->
+        <Button
+            x:Name="checkInfoButton"
+            Grid.Column="0"
+            Grid.Row="4"
+            Content="Kiểm tra thông tin"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="200"
+            Height="50"
+            Margin="-80 0 0 0"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="checkInfoButton_Click" />
+        <!--#endregion-->
+
+        <!--#region Nút Lập phiếu-->
+        <Button
+            x:Name="completeFormButton"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="4"
+            Content="Lập phiếu"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="200"
+            Height="50"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="completeFormButton_Click" />
+        <!--#endregion-->
+
+        <!--#region Nút Hủy-->
+        <Button
+            x:Name="cancelButton"
+            Grid.Column="1"
+            Grid.Row="4"
+            Content="Hủy"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="200"
+            Height="50"
+            Margin="80 0 0 0"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="cancelButton_Click" />
+        <!--#endregion-->
+
+        <!--#region Hiển thị thông tin tìm thấy sổ-->
+        <StackPanel
+            x:Name="infoStackPanel"
+            Orientation="Vertical"
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Visibility="Hidden"
+            Margin="10">
+
+            <StackPanel
+                x:Name="bookIdStackPanel"
+                Orientation="Horizontal">
+                <Label
+                    Content="Mã sổ: "
+                    Margin="10 0 0 0"
+                    FontSize="20"
+                    Foreground="Black" />
+
+                <Label
+                    x:Name="bookIdLabel"
+                    d:Content="1234"
+                    FontSize="20"
+                    Foreground="Black" />
+            </StackPanel>
+
+            <StackPanel
+                x:Name="customerIdStackPanel"
+                Orientation="Horizontal">                
+                <Label
+                    Content="CMND/CCCD: "
+                    Margin="10 0 0 0"
+                    FontSize="20"
+                    Foreground="Black" />
+
+                <Label
+                    x:Name="customerIdLabel"
+                    d:Content="321456789"
+                    FontSize="20"
+                    Foreground="Black" />
+            </StackPanel>
+
+            <StackPanel
+                x:Name="withdrawableAmountStackPanel"
+                Orientation="Horizontal">
+                <Label
+                    Content="Số tiền có thể rút: "
+                    Margin="10 0 0 0"
+                    FontSize="20"
+                    Foreground="Black" />
+
+                <Label
+                    x:Name="withdrawableAmountLabel"
+                    d:Content="1000000"
+                    FontSize="20"
+                    Foreground="Black" />
+            </StackPanel>
+
+        </StackPanel>
+
+        <!--#endregion-->
+        
+        <!--#region Lỗi thông tin-->
+        <StackPanel
+            x:Name="infoFaultStackPanel"
+            Orientation="Vertical"
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Visibility="Hidden"
+            Margin="10">
+
+            <Label
+                x:Name="infoFaultLabel"
+                d:Content="Không tìm thấy sổ"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Foreground="#d00" />
+        </StackPanel>
+        <!--#endregion-->
+        
+
+    </Grid>
+</Window>

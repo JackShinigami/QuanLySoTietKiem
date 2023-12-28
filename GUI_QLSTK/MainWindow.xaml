@@ -5,8 +5,157 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI_QLSTK"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        WindowStartupLocation="CenterScreen"
+        Title="Quản lí sổ tiết kiệm" 
+        Height="540" Width="960"
+        MinHeight="540" MinWidth="960">
+    
+    <Grid
+        Background="#d9d9d9"
+        >
 
+        <!--#region Chia cột, dòng cho grid-->
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="*" />
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!--#endregion-->
+
+    
+        <!--#region Tiêu đề-->
+        <Label
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Content="Quản lí sổ tiết kiệm"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="45"
+            FontWeight="Bold" />
+        
+        <!--#endregion-->
+        
+        <!--#region Mở sổ tiết kiệm-->
+        <Button
+            Grid.Column="0"
+            Grid.Row="1"
+            Content="Mở sổ tiết kiệm"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="400"
+            Height="80"
+            Style="{StaticResource WhiteButtonStyle}"
+            Click="createBookButton_Click" />
+        
+        <!--#endregion-->
+        
+        <!--#region Lập phiếu gửi tiền-->
+
+        <Button
+            Grid.Column="1"
+            Grid.Row="1"
+            Content="Lập phiếu gửi tiền"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="400"
+            Height="80"
+            Style="{StaticResource WhiteButtonStyle}"
+            Click="createDepositButton_Click" />
+        
+        <!--#endregion-->
+        
+        <!--#region Lập phiếu rút tiền-->
+
+        <Button
+            Grid.Column="0"
+            Grid.Row="2"
+            Content="Lập phiếu rút tiền"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="400"
+            Height="80"
+            Style="{StaticResource WhiteButtonStyle}"
+            Click="createWithdrawButton_Click" />
+        
+        <!--#endregion-->
+
+        <!--#region Tra cứu sổ-->
+
+        <Button
+            Grid.Column="1"
+            Grid.Row="2"
+            Content="Tra cứu sổ"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="400"
+            Height="80"
+            Style="{StaticResource WhiteButtonStyle}"
+            Click="lookUpBookButton_Click" />
+        
+        <!--#endregion-->
+        
+        <!--#region Báo cáo doanh số hoạt động ngày-->
+
+        <Button
+            Grid.Column="0"
+            Grid.Row="3"
+            Content="Báo cáo doanh số hoạt động ngày"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="400"
+            Height="80"
+            Style="{StaticResource WhiteButtonStyle}"
+            Click="reportDayButton_Click" />
+        
+        <!--#endregion-->
+
+        <!--#region Báo cáo mở/đóng sổ tháng-->
+
+        <Button
+            Grid.Column="1"
+            Grid.Row="3"
+            Content="Báo cáo mở/đóng sổ tháng"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="400"
+            Height="80"
+            Style="{StaticResource WhiteButtonStyle}"
+            Click="reportMonthButton_Click" />
+        
+        <!--#endregion-->
+
+        <!--#region Quản lí quy định-->
+
+        <Button
+            Grid.Column="1"
+            Grid.Row="4"
+            Content="Quản lí quy định"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="300"
+            Height="50"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="manageRegulationButton_Click" />
+        
+        <!--#endregion-->
+        
     </Grid>
+    
 </Window>

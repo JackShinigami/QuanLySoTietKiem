@@ -4,6 +4,19 @@
              xmlns:local="clr-namespace:GUI_QLSTK"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="Styles/ButtonStyles.xaml" />
+                <ResourceDictionary
+                    Source="Styles/TextBoxStyles.xaml" />
+                <ResourceDictionary
+                    Source="Styles/ComboBoxStyles.xaml" />
+                <ResourceDictionary
+                    Source="Styles/DatePickerStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

@@ -1,0 +1,321 @@
+﻿<Window
+    x:Class="GUI_QLSTK.CreateBookWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GUI_QLSTK"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    Title="Tạo sổ"
+    Loaded="Window_Loaded"
+    Height="540"
+    Width="960">
+
+    <Window.Resources>
+
+        <local:PeriodToStringConverter
+            x:Key="PeriodToStringConverter" />
+
+    </Window.Resources>
+    
+    <Grid
+        Background="#d9d9d9" >
+
+
+        <!--#region Grid 2x7-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="*" />
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--#endregion-->
+
+
+        <!--#region Tiêu đề-->
+
+        <Border
+            Margin="10"
+            Height="50"
+            Background="#fff"
+            CornerRadius="10"
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.ColumnSpan="2">
+
+            <Label
+                Content="Sổ tiết kiệm"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="30"
+                FontWeight="Bold"
+                Foreground="Black" />
+        </Border>
+        <!--#endregion-->
+
+        
+        <!--region Thay đổi qui định-->
+
+        <Button
+            Grid.Column="1"
+            Grid.Row="1"
+            Content="Quản lí quy định"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Width="300"
+            Height="50"
+            Margin="0 0 30 0"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="manageRegulationButton_Click" />
+
+        <!--#endregion-->
+        
+        <!--#region Mã sổ-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="0"
+            Grid.Row="2">
+
+            <Label
+                Content="Mã sổ:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="bookIdTextBox"
+                Margin="5"
+                d:Text="1234"
+                FontSize="20"
+                Style="{DynamicResource UnderlinedFocusTextBox}"
+                />
+        </DockPanel>
+
+        <!--#endregion-->
+        
+        <!--#region Loại tiết kiệm-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="1"
+            Grid.Row="2">
+
+            <Label
+                Content="Loại tiết kiệm:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <ComboBox
+                x:Name="periodTypeComboBox"
+                Margin="5"
+                FontSize="20"
+                d:Text="5 tháng"
+                SelectedIndex="0"
+                Style="{DynamicResource ComboBoxStyle}">
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Text="{Binding Kyhan, Converter= {StaticResource PeriodToStringConverter}}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+        </DockPanel>
+        
+        <!--#endregion-->
+        
+        <!--#region Khách hàng-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="0"
+            Grid.Row="3">
+
+            <Label
+                Content="Khách hàng:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="customerTextBox"
+                Margin="5"
+                FontSize="20"
+                d:Text="Nguyễn Văn A"
+                Style="{DynamicResource UnderlinedFocusTextBox}" />
+        </DockPanel>
+
+        <!--#endregion-->
+        
+        <!--#region CMND/CCCD-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="1"
+            Grid.Row="3">
+
+            <Label
+                Content="CMND/CCCD:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="idCardTextBox"
+                Margin="5"
+                FontSize="20"
+                d:Text="123456789"
+                Style="{DynamicResource UnderlinedFocusTextBox}" />
+        </DockPanel>
+        
+        <!--#endregion-->
+        
+        <!--#region Địa chỉ-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="4">
+
+            <Label
+                Content="Địa chỉ:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="addressTextBox"
+                Margin="5"
+                FontSize="20"
+                d:Text="123 ấp Này, xã Kia, quận Đó, tỉnh Nọ"
+                Style="{DynamicResource UnderlinedFocusTextBox}" />
+        </DockPanel>
+
+        <!--#endregion-->
+        
+        <!--#region Ngày mở sổ-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="0"
+            Grid.Row="5">
+
+            <Label
+                Content="Ngày mở sổ:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            
+            <DatePicker
+                x:Name="openDateDatePicker"
+                Margin="5"
+                FontSize="20"
+                Background="White"
+                BorderThickness="0"
+                d:SelectedDate="1/15/2023"
+                Text="{Binding OpenDate, StringFormat=dd/MM/yyyy}"
+                Style="{DynamicResource DatePickerStyle}" />
+        </DockPanel>
+        
+        <!--#endregion-->
+        
+        <!--#region Số tiền gửi-->
+
+        <DockPanel
+            Margin="10"
+            Height="50"
+            Grid.Column="1"
+            Grid.Row="5">
+
+            <Label
+                Content="Số tiền gửi:"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+
+            <TextBox
+                x:Name="depositTextBox"
+                Margin="5"
+                FontSize="20"
+                d:Text="1000000"
+                Style="{DynamicResource UnderlinedFocusTextBox}" />
+        </DockPanel>
+
+        <!--#endregion-->
+
+        <!--#region Nút tạo sổ-->
+
+        <Button
+            x:Name="createBookButton"
+            Grid.Column="0"
+            Grid.Row="6"
+            Content="Tạo sổ"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="200"
+            Height="50"
+            Margin="0 -10 0 0"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="createBookButton_Click" />
+
+        <!--#endregion-->
+        
+        <!--#region Nút hủy-->
+
+        <Button
+            x:Name="cancelButton"
+            Grid.Column="1"
+            Grid.Row="6"
+            Content="Hủy"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="200"
+            Height="50"
+            Margin="0 -10 0 0"
+            Style="{StaticResource GreyButtonStyle}"
+            Click="cancelButton_Click" />
+        
+        <!--#endregion-->
+
+    </Grid>
+</Window>
