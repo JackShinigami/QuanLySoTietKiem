@@ -9,8 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\calendar.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BUS_QLSTK\BUS_QLSTK.csproj" />
     <ProjectReference Include="..\DTO_QLSTK\DTO_QLSTK.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\calendar.png" />
   </ItemGroup>
 
 </Project>
