@@ -591,6 +591,30 @@ namespace BUS_QLSTK
             return result;
         }
 
+        public bool update_LoaiTietKiem(int kyHan, double laiSuat)
+        {   
+            bool result = true;
+            if (kyHan < 0)
+            {
+                result = false;
+                throw new Exception("Kỳ hạn không hợp lệ");
+            }
+            DAL_Config dal = DAL_Config.Instance;
+            LoaiTietKiem upd = new LoaiTietKiem();
+            upd.Kyhan = kyHan;
+            upd.Laisuat = laiSuat;
+            try
+            {
+                dal.Update_LoaiTietKiem(upd);
+            }
+            catch (Exception e)
+            {
+                result = false;
+            }
+            return result;
+
+        }
+
         public bool update_NgayGuiToiThieu(int ngay)
         {
             var result = true;
