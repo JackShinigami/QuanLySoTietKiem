@@ -152,6 +152,7 @@
                 HorizontalScrollBarVisibility="Auto"                
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
+                BorderThickness="0"
                 ItemsSource="{Binding}">
 
 

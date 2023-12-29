@@ -50,7 +50,7 @@ namespace GUI_QLSTK
 
         }
 
-        private async Task reportButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async Task reportButton_ClickAsync(object sender, RoutedEventArgs e, DateTime date)
         {
 
             progressBar.Visibility = Visibility.Visible;
@@ -58,8 +58,7 @@ namespace GUI_QLSTK
             var list = new List<dynamic>();
             await Task.Run(() =>
             {
-                DateTime dateTime = DateTime.ParseExact(ReportDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                list = business.getList_DoanhSoNgay(dateTime);
+                list = business.getList_DoanhSoNgay(date);
                 IsLoading = false;
             });
 
@@ -73,7 +72,9 @@ namespace GUI_QLSTK
 
         private void reportButton_Click(object sender, RoutedEventArgs e)
         {
-            _ = reportButton_ClickAsync(sender, e);
+
+            DateTime dateTime = reportDatePicker.SelectedDate!.Value;
+            _ = reportButton_ClickAsync(sender, e, dateTime);
         }
     }
 }
