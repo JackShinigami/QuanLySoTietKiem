@@ -87,13 +87,15 @@ namespace BUS_QLSTK
                     {
                         KhachHang.Add_KhachHang(kh);
                     }
-                    catch (Exception e) { }
+                    catch (Exception e) {
+                       
+                    }
                     SoTietKiem.Add_SoTietKiem(soTietKiem);
                 }
                 catch (Exception e)
                 {
                     result = false;
-                    throw e;
+                    throw new Exception(e.Message);
                 }
             }
 
@@ -446,11 +448,7 @@ namespace BUS_QLSTK
             var list_KhachHang = khachHang.GetList_KhachHang();
             var list_Stt = Enumerable.Range(1, list_SoTietKiem.Count).ToList();
 
-            var list_SoTietKiemJoinKhachHang = from sotietkiem in list_SoTietKiem
-                                               join khachhang in list_KhachHang on sotietkiem.Cccd equals khachhang.Cccd into temp
-                                               from khachhang in temp.DefaultIfEmpty()
-                                               select new { sotietkiem.Maso, sotietkiem.Loaitietkiem, sotietkiem.Cccd, khachhang.Hoten, sotietkiem.Sodu};
-
+            var list_SoTietKiemJoinKhachHang = list_SoTietKiem.Join(list_KhachHang, x => x.Cccd, y => y.Cccd, (x, y) => new { x.Maso, x.Loaitietkiem, x.Cccd, y.Hoten, x.Sodu });
             var result = list_SoTietKiemJoinKhachHang.Select((x, index) => new { Stt = list_Stt[index], x.Maso, x.Loaitietkiem, x.Cccd, x.Hoten, x.Sodu });
 
             return result.ToList<dynamic>();

@@ -43,6 +43,7 @@ namespace DAL_QLSTK
 
             if (context.KhachHangs.Find(kh.Cccd) != null)
                 throw new Exception("Khách hàng đã tồn tại");
+            // TODO: bắt lỗi trùng CCCD nhưng khác tên
             context.KhachHangs.Add(kh);
             context.SaveChanges();
         }
