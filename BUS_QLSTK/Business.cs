@@ -538,7 +538,8 @@ namespace BUS_QLSTK
                 .Select(x => new { Ngaymoso = x.Key, Soluongmo = x.Count() });
 
             //lay cac so tiet kiem dong trong thang group by ngay dong
-            var list_SoTietKiemDong = dal.GetList_SoTietKiem().Where(x => x.Ngaydongso.Value.Month == thang && x.Ngaydongso.Value.Year == nam && x.Loaitietkiem == loaitk)
+            var dsstkcongaydong = dal.GetList_SoTietKiem().Where(x => x.Ngaydongso != null);
+            var list_SoTietKiemDong = dsstkcongaydong.Where(x => x.Ngaydongso.Value.Month == thang && x.Ngaydongso.Value.Year == nam && x.Loaitietkiem == loaitk)
                 .GroupBy(x => x.Ngaydongso.Value.Date)
                 .Select(x => new { Ngaydongso = x.Key, Soluongdong = x.Count() });
             //join 2 list so tiet kiem mo va dong theo ngay va tinh chenh lech
