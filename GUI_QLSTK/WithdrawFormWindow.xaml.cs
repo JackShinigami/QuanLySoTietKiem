@@ -1,6 +1,7 @@
 ﻿using BUS_QLSTK;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace GUI_QLSTK
     {
 
         Business bus = Business.Instance;
+        public string WithdrawDate;
 
         public WithdrawFormWindow()
         {
@@ -31,18 +33,10 @@ namespace GUI_QLSTK
         private void completeFormButton_Click(object sender, RoutedEventArgs e)
         {
             bool result = false;
+            progressStackPanel.Visibility = Visibility.Visible;
 
             try
             {
-
-                if (bookIdTextBox.Text == "")
-                {
-                    throw new Exception("Vui lòng nhập mã sổ");
-                }
-                if (customerIDTextBox.Text == "")
-                {
-                    throw new Exception("Vui lòng nhập mã khách hàng");
-                }
                 if (withdrawTextBox.Text == "")
                 {
                     throw new Exception("Vui lòng nhập số tiền rút");
@@ -62,12 +56,13 @@ namespace GUI_QLSTK
                 }
 
                 var withdrawDate = withdrawDateDatePicker.SelectedDate!.Value;
-
                 result = bus.create_PhieuRut(BookId, CustomerID, withdraw, withdrawDate);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                infoFaultStackPanel.Visibility = Visibility.Visible;
+                infoStackPanel.Visibility = Visibility.Collapsed;
+                infoFaultLabel.Content = ex.Message;
             }
 
             if (result)
@@ -75,6 +70,7 @@ namespace GUI_QLSTK
                 MessageBox.Show("Tạo phiếu rút thành công");
                 this.Close();
             }
+            progressStackPanel.Visibility = Visibility.Collapsed;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -84,12 +80,21 @@ namespace GUI_QLSTK
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            CultureInfo cultureInfo = new CultureInfo("vi-VN");
+            cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+            cultureInfo.DateTimeFormat.DateSeparator = "/";
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+
+            withdrawDateDatePicker.SelectedDate = DateTime.Now;
+            WithdrawDate = withdrawDateDatePicker.SelectedDate!.Value.ToShortDateString();
+            withdrawDateDatePicker.Text = WithdrawDate;
 
         }
 
         private void checkInfoButton_Click(object sender, RoutedEventArgs e)
         {
             long? result = null;
+            progressStackPanel.Visibility = Visibility.Visible;
 
             try
             {
@@ -122,6 +127,7 @@ namespace GUI_QLSTK
                             withdrawableAmountLabel.Content = -result;
                             withdrawTextBox.IsEnabled = true;
                             withdrawTextBox.Text = (-result).ToString();
+                            completeFormButton.IsEnabled = true;
 
                         } 
                         else // Số tiền sổ kì hạn
@@ -132,27 +138,33 @@ namespace GUI_QLSTK
                             customerIdLabel.Content = customerIDTextBox.Text;
                             withdrawableAmountLabel.Content = result;
                             withdrawTextBox.IsEnabled = false;
-                            withdrawTextBox.Text = result.ToString();                            
+                            withdrawTextBox.Text = result.ToString();
+                            completeFormButton.IsEnabled = true;
                         }
                     }
                     else
                     {
-                        infoFaultStackPanel.Visibility = Visibility.Visible;
-                        infoStackPanel.Visibility = Visibility.Collapsed;
-                        infoFaultLabel.Content = "Không tìm thấy thông tin";
+                        // không có null nên không làm gì
                     }
 
                 } catch (Exception ex)
                 {
                     infoFaultStackPanel.Visibility = Visibility.Visible;
                     infoStackPanel.Visibility = Visibility.Collapsed;
+                    completeFormButton.IsEnabled = false;
+                    withdrawTextBox.Text = "";
                     infoFaultLabel.Content = ex.Message;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                infoFaultStackPanel.Visibility = Visibility.Visible;
+                infoStackPanel.Visibility = Visibility.Collapsed;
+                completeFormButton.IsEnabled = false;
+                withdrawTextBox.Text = "";
+                infoFaultLabel.Content = ex.Message;
             }
+            progressStackPanel.Visibility = Visibility.Collapsed;
         }
 
         private void manageRegulationButton_Click(object sender, RoutedEventArgs e)

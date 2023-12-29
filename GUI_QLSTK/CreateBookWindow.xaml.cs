@@ -45,8 +45,10 @@ namespace GUI_QLSTK
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            periodTypeComboBox.ItemsSource = bus.getList_LoaiTietKiem();
             try
             {
+                progressLabel.Visibility = Visibility.Visible;
                 CultureInfo cultureInfo = new CultureInfo("vi-VN");
                 cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
                 cultureInfo.DateTimeFormat.DateSeparator = "/";
@@ -58,13 +60,13 @@ namespace GUI_QLSTK
                 bookIdTextBox.Text = bus.getNew_MaSo().ToString();
                 bookIdTextBox.IsReadOnly = true;
 
-                periodTypeComboBox.ItemsSource = bus.getList_LoaiTietKiem();
                 this.DataContext = this;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            progressLabel.Visibility = Visibility.Collapsed;
 
         }
 
@@ -78,6 +80,7 @@ namespace GUI_QLSTK
 
 
             bool result = false;
+            progressLabel.Visibility = Visibility.Visible;
 
             try
             {
@@ -132,6 +135,7 @@ namespace GUI_QLSTK
             {
                 MessageBox.Show("Tạo sổ tiết kiệm thất bại");
             }
+            progressLabel.Visibility = Visibility.Collapsed;
 
         }
 

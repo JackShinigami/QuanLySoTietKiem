@@ -45,6 +45,15 @@
                                 Property="BorderThickness"
                                 Value="4" />
                         </Trigger>
+
+                        <Trigger
+                            Property="IsEnabled"
+                            Value="False">
+                            <Setter
+                                TargetName="Border"
+                                Property="Background"
+                                Value="#bbb" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -105,6 +114,24 @@
                             <Setter
                                 Property="BorderThickness"
                                 Value="4" />
+                        </Trigger>
+
+
+                        <Trigger
+                            Property="IsEnabled"
+                            Value="False">
+                            <Setter
+                                TargetName="Border"
+                                Property="Background"
+                                Value="#ccc" />
+                            <Setter
+                                TargetName="Border"
+                                Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        Opacity="0"/>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

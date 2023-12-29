@@ -204,6 +204,7 @@
             VerticalAlignment="Center"
             Width="200"
             Height="50"
+            IsEnabled="False"
             Style="{StaticResource GreyButtonStyle}"
             Click="completeFormButton_Click" />
         <!--#endregion-->
@@ -304,6 +305,25 @@
         </StackPanel>
         <!--#endregion-->
         
+        <!--#region Tiến độ-->
+        <StackPanel
+            x:Name="progressStackPanel"
+            Orientation="Vertical"
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Visibility="Hidden"
+            Margin="10">
+
+            <Label
+                x:Name="progressLabel"
+                d:Content="Đang xử lí..."
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Foreground="Black" />
+        </StackPanel>
+        <!--#endregion-->
+
 
     </Grid>
 </Window>

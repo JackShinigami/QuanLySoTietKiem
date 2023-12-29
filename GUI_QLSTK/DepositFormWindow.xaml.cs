@@ -44,6 +44,7 @@ namespace GUI_QLSTK
 
 
             bool result = false;
+            progressLabel.Visibility = Visibility.Visible;
 
             try
             {
@@ -61,26 +62,41 @@ namespace GUI_QLSTK
                     throw new Exception("Vui lòng nhập số tiền gửi");
                 }
 
-                var deposit = long.Parse(depositTextBox.Text);
-                var BookId = int.Parse(bookIdTextBox.Text);
-                var CustomerID = customerIDTextBox.Text;
+                long deposit = 0;
+                try
+                {
+                    deposit = long.Parse(depositTextBox.Text);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Số tiền gửi không hợp lệ");
+                }
+                int bookId = 0;
+                try
+                {
+                    bookId = int.Parse(bookIdTextBox.Text);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Mã sổ không hợp lệ");
+                }
+                var customerID = customerIDTextBox.Text;
 
                 if (depositDateDatePicker.SelectedDate == null)
                 {
                     throw new Exception("Vui lòng nhập ngày gửi");
                 }
-                if(deposit <= 0)
+                var depositDate = depositDateDatePicker.SelectedDate!.Value;
+
+                if (deposit <= 0)
                 {
                     throw new Exception("Số tiền gửi phải lớn hơn 0");
                 }
-
-                var depositDate = depositDateDatePicker.SelectedDate!.Value;
-
-                result = bus.create_PhieuGui(BookId, CustomerID, deposit, depositDate);
+                result = bus.create_PhieuGui(bookId, customerID, deposit, depositDate);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                errorLabel.Content = ex.Message;
             }
 
             if (result)
@@ -88,6 +104,7 @@ namespace GUI_QLSTK
                 MessageBox.Show("Tạo phiếu gửi thành công");
                 this.Close();
             }
+            progressLabel.Visibility = Visibility.Collapsed;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
