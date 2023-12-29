@@ -476,7 +476,7 @@ namespace BUS_QLSTK
             
 
             //lay phieu gui theo ngay join voi so tiet kiem de lay loai tiet kiem
-            var list_PhieuGui = dal.GetList_PhieuGui().Where(x => x.Ngaygui == ngay)
+            var list_PhieuGui = dal.GetList_PhieuGui().Where(x => x.Ngaygui.Value.Date==ngay.Date && x.Ngaygui.Value.Month==ngay.Month && x.Ngaygui.Value.Year==ngay.Year)
                 .Join(dal3.GetList_SoTietKiem(), x => x.Maso, y => y.Maso, (x, y) => new { x, y })
                 .Select(x => new { x.x.Maphieugui, x.x.Ngaygui, x.x.Sotien, x.y.Loaitietkiem });
             //lay doanh so gui theo ngay group boi loai tiet kiem
@@ -492,7 +492,7 @@ namespace BUS_QLSTK
 
 
             //lay phieu rut theo ngay join voi so tiet kiem de lay loai tiet kiem
-            var list_PhieuRut = dal2.GetList_PhieuRut().Where(x => x.Ngayrut == ngay)
+            var list_PhieuRut = dal2.GetList_PhieuRut().Where(x => x.Ngayrut.Value.Date == ngay.Date && x.Ngayrut.Value.Month == ngay.Month && x.Ngayrut.Value.Year==ngay.Year)
                 .Join(dal3.GetList_SoTietKiem(), x => x.Maso, y => y.Maso, (x, y) => new { x, y })
                 .Select(x => new { x.x.Maphieurut, x.x.Ngayrut, x.x.Sotien, x.y.Loaitietkiem });
             //lay doanh so rut theo ngay group boi loai tiet kiem
@@ -608,6 +608,30 @@ namespace BUS_QLSTK
                 result = false;
             }
             return result;
+        }
+
+        public bool update_LoaiTietKiem(int kyHan, double laiSuat)
+        {   
+            bool result = true;
+            if (kyHan < 0)
+            {
+                result = false;
+                throw new Exception("Kỳ hạn không hợp lệ");
+            }
+            DAL_Config dal = DAL_Config.Instance;
+            LoaiTietKiem upd = new LoaiTietKiem();
+            upd.Kyhan = kyHan;
+            upd.Laisuat = laiSuat;
+            try
+            {
+                dal.Update_LoaiTietKiem(upd);
+            }
+            catch (Exception e)
+            {
+                result = false;
+            }
+            return result;
+
         }
 
         public bool update_NgayGuiToiThieu(int ngay)

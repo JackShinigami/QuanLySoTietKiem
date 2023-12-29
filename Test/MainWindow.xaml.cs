@@ -26,10 +26,10 @@ namespace Test
         {
             Business bus = Business.Instance;
             DateTime ngay = DateTime.Parse("2023-03-12");
-            //var baocaodoanhso = bus.getList_DoanhSoNgay(ngay);
+            var baocaodoanhso = bus.getList_DoanhSoNgay(ngay);
             //MessageBox.Show(baocaodoanhso.Count.ToString());
 
-            var baocaodongmosothang = bus.getList_BaoCaoDongMoSoThang(1,2023,1);
+            //var baocaodongmosothang = bus.getList_BaoCaoDongMoSoThang(1,2023,1);
 
         }
     }
