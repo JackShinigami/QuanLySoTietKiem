@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:GUI_QLSTK"
     mc:Ignorable="d"
-    WindowStartupLocation="CenterScreen"
     Title="Phiếu gửi tiền"
+    WindowStartupLocation="CenterScreen"
     Loaded="Window_Loaded"
     Height="540"
     Width="960">
@@ -171,6 +171,7 @@
             VerticalAlignment="Center"
             Width="200"
             Height="50"
+            FontSize="23"
             Style="{StaticResource GreyButtonStyle}"
             Click="completeFormButton_Click" />
         <!--#endregion-->
@@ -185,6 +186,7 @@
             VerticalAlignment="Center"
             Width="200"
             Height="50"
+            FontSize="23"
             Style="{StaticResource GreyButtonStyle}"
             Click="cancelButton_Click" />
         <!--#endregion-->

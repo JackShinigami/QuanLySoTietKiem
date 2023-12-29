@@ -149,6 +149,7 @@
             Content="Quản lí quy định"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            FontSize="23"
             Width="300"
             Height="50"
             Style="{StaticResource GreyButtonStyle}"

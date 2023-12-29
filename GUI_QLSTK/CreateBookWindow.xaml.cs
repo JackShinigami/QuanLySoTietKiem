@@ -38,8 +38,6 @@ namespace GUI_QLSTK
         public CreateBookWindow()
         {
             InitializeComponent();
-            //TODO: tải từ cơ sở dữ liệu thay vì gán cứng
-
 
         }
 
@@ -72,7 +70,7 @@ namespace GUI_QLSTK
 
         private void manageRegulationButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //TODO: Mở cửa sổ quản lý quy định
         }
 
         private void createBookButton_Click(object sender, RoutedEventArgs e)

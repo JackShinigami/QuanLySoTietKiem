@@ -95,6 +95,7 @@
         <Button
             Grid.Column="1"
             Grid.Row="1"
+            FontSize="23"
             Content="Quản lí quy định"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
@@ -307,6 +308,7 @@
             Grid.Column="0"
             Grid.Row="6"
             Content="Tạo sổ"
+            FontSize="23"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Width="200"
@@ -324,6 +326,7 @@
             Grid.Column="1"
             Grid.Row="6"
             Content="Hủy"
+            FontSize="23"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Width="200"

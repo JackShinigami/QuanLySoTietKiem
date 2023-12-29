@@ -440,7 +440,22 @@ namespace BUS_QLSTK
 
         public List<dynamic> getList_SoTietKiem()
         {
-            return new List<dynamic>();
+            DAL_SoTietKiem soTietKiem = DAL_SoTietKiem.Instance;
+            DAL_KhachHang khachHang = DAL_KhachHang.Instance;
+
+            var list_SoTietKiem = soTietKiem.GetList_SoTietKiem();  
+            var list_KhachHang = khachHang.GetList_KhachHang();
+            var list_Stt = Enumerable.Range(1, list_SoTietKiem.Count).ToList();
+
+            var list_SoTietKiemJoinKhachHang = from sotietkiem in list_SoTietKiem
+                                   join khachhang in list_KhachHang on sotietkiem.Cccd equals khachhang.Cccd into temp
+                                   from khachhang in temp.DefaultIfEmpty()
+                                   select new { sotietkiem.Maso, sotietkiem.Loaitietkiem, sotietkiem.Cccd, khachhang.Hoten, sotietkiem.Sodu};
+
+            var result = list_SoTietKiemJoinKhachHang.Select((x, index) => new { Stt = list_Stt[index], x.Maso, x.Loaitietkiem, x.Cccd, x.Hoten, x.Sodu });
+
+            return result.ToList<dynamic>();
+
         }
 
         //todo: đồng nhất kiểu Date
@@ -508,7 +523,9 @@ namespace BUS_QLSTK
 
             //thêm cột chênh lệch 
             var BaoCaoDoanhSoNgay = list_DoanhSoNgay.Select(x => new { x.Loaitietkiem, x.Tongtiengui, x.Tongtienrut, Chenhlech = x.Tongtiengui - x.Tongtienrut }).OrderBy(x=>x.Loaitietkiem);
-            var result = BaoCaoDoanhSoNgay.ToList<dynamic>();
+            var list_Stt = Enumerable.Range(1, BaoCaoDoanhSoNgay.Count()).ToList();
+            var BaoCaoDoanhSoNgay2 = BaoCaoDoanhSoNgay.Select((x, index) => new { Stt = list_Stt[index], x.Loaitietkiem, x.Tongtiengui, x.Tongtienrut, x.Chenhlech });
+            var result = BaoCaoDoanhSoNgay2.ToList<dynamic>();
             return result;
         }
 
@@ -540,7 +557,9 @@ namespace BUS_QLSTK
             var list_BaoCaoDongMoSoThang = leftjoin.Union(rightjoin);
             //them cot chenh lech
             var list_BaoCaoDongMoSoThang2 = list_BaoCaoDongMoSoThang.Select(x => new { x.Ngay, x.Soluongmo, x.Soluongdong, Chenhlech = x.Soluongmo - x.Soluongdong }).OrderBy(x=>x.Ngay);
-            var result = list_BaoCaoDongMoSoThang2.ToList<dynamic>();
+            var list_Stt = Enumerable.Range(1, list_BaoCaoDongMoSoThang2.Count()).ToList();
+            var list_BaoCaoDongMoSoThang3 = list_BaoCaoDongMoSoThang2.Select((x, index) => new { Stt = list_Stt[index], x.Ngay, x.Soluongmo, x.Soluongdong, x.Chenhlech });
+            var result = list_BaoCaoDongMoSoThang3.ToList<dynamic>();
             return result;
         }
 

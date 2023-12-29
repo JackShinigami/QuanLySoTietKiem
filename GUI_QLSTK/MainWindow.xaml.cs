@@ -42,24 +42,27 @@ namespace GUI_QLSTK
 
         private void lookUpBookButton_Click(object sender, RoutedEventArgs e)
         {
-
+            LookUpWindow lookUpWindow = new LookUpWindow();
+            lookUpWindow.ShowDialog();
         }
 
 
         private void reportMonthButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // MonthReportWindow monthReportWindow = new MonthReportWindow();
+            // monthReportWindow.ShowDialog();
         }
 
         private void reportDayButton_Click(object sender, RoutedEventArgs e)
         {
-
+            DayReportWindow dayReportWindow = new DayReportWindow();
+            dayReportWindow.ShowDialog();
         }
 
 
         private void manageRegulationButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // TODO: Điều hướng sang màn hình quản lý quy định
         }
 
 

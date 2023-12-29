@@ -78,8 +78,8 @@
                         BorderThickness="1"
                         CornerRadius="10">
                         <TextBlock
-                            Padding="5"
-                            FontSize="23"
+                            Padding="{TemplateBinding Padding}"
+                            FontSize="{TemplateBinding FontSize}"
                             Text="{TemplateBinding Content}"
                             Foreground="Black"
                             Cursor="Hand"
