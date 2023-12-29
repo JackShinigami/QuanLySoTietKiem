@@ -33,25 +33,30 @@ namespace GUI_QLSTK
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
-            progressBar.Visibility = Visibility.Visible;
-
-            bool loading = true;
-            var list = new List<dynamic>();
-            await Task.Run(() =>
+            try
             {
-                list = bus.getList_SoTietKiem();
-                loading = false;
-            });
+                progressBar.Visibility = Visibility.Visible;
 
-            while (loading) 
+                bool loading = true;
+                var list = new List<dynamic>();
+                await Task.Run(() =>
+                {
+                    list = bus.getList_SoTietKiem();
+                    loading = false;
+                });
+
+                while (loading)
+                {
+                    // wait for loading to finish
+                }
+                lookUpDataGrid.ItemsSource = list;
+
+
+                progressBar.Visibility = Visibility.Hidden;
+            } catch (Exception ex)
             {
-                // wait for loading to finish
+                MessageBox.Show(ex.Message);
             }
-            lookUpDataGrid.ItemsSource = list;
-
- 
-            progressBar.Visibility = Visibility.Hidden;
 
         }
 

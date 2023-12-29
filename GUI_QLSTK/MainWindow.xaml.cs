@@ -49,8 +49,8 @@ namespace GUI_QLSTK
 
         private void reportMonthButton_Click(object sender, RoutedEventArgs e)
         {
-            // MonthReportWindow monthReportWindow = new MonthReportWindow();
-            // monthReportWindow.ShowDialog();
+            MonthReportWindow monthReportWindow = new MonthReportWindow();
+            monthReportWindow.ShowDialog();
         }
 
         private void reportDayButton_Click(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using BUS_QLSTK;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.WebSockets;
@@ -20,7 +21,7 @@ namespace GUI_QLSTK
     /// <summary>
     /// Interaction logic for DayReportWindow.xaml
     /// </summary>
-    public partial class DayReportWindow : Window
+    public partial class DayReportWindow : Window, INotifyPropertyChanged
     {
 
         public string ReportDate { get; set; }
@@ -28,8 +29,16 @@ namespace GUI_QLSTK
         public bool IsLoading { get; set; }
         Business business = Business.Instance;
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public DayReportWindow()
         {
+
+            CultureInfo cultureInfo = new CultureInfo("vi-VN");
+            cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+            cultureInfo.DateTimeFormat.DateSeparator = "/";
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            ReportDate = DateTime.Now.ToShortDateString();
             InitializeComponent();
         }
 
@@ -40,13 +49,10 @@ namespace GUI_QLSTK
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            CultureInfo cultureInfo = new CultureInfo("vi-VN");
-            cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
-            cultureInfo.DateTimeFormat.DateSeparator = "/";
-            Thread.CurrentThread.CurrentCulture = cultureInfo;
 
             reportDatePicker.SelectedDate = DateTime.Now;
             ReportDate = reportDatePicker.SelectedDate!.Value.ToShortDateString();
+            reportDatePicker.Text = ReportDate;
 
         }
 

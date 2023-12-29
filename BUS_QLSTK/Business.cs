@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -448,9 +447,9 @@ namespace BUS_QLSTK
             var list_Stt = Enumerable.Range(1, list_SoTietKiem.Count).ToList();
 
             var list_SoTietKiemJoinKhachHang = from sotietkiem in list_SoTietKiem
-                                   join khachhang in list_KhachHang on sotietkiem.Cccd equals khachhang.Cccd into temp
-                                   from khachhang in temp.DefaultIfEmpty()
-                                   select new { sotietkiem.Maso, sotietkiem.Loaitietkiem, sotietkiem.Cccd, khachhang.Hoten, sotietkiem.Sodu};
+                                               join khachhang in list_KhachHang on sotietkiem.Cccd equals khachhang.Cccd into temp
+                                               from khachhang in temp.DefaultIfEmpty()
+                                               select new { sotietkiem.Maso, sotietkiem.Loaitietkiem, sotietkiem.Cccd, khachhang.Hoten, sotietkiem.Sodu};
 
             var result = list_SoTietKiemJoinKhachHang.Select((x, index) => new { Stt = list_Stt[index], x.Maso, x.Loaitietkiem, x.Cccd, x.Hoten, x.Sodu });
 
@@ -533,14 +532,14 @@ namespace BUS_QLSTK
         {
             DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
             //lay cac so tiet kiem mo trong thang group by ngay mo
-            var list_SoTietKiemMo = dal.GetList_SoTietKiem().Where(x => x.Ngaymoso.Value.Month == thang && x.Ngaymoso.Value.Year == nam && x.Loaitietkiem==loaitk)
-                .GroupBy(x => x.Ngaymoso.Value.Date)
+            var list_SoTietKiemMo = dal.GetList_SoTietKiem().Where(x => x.Ngaymoso!.Value.Month == thang && x.Ngaymoso!.Value.Year == nam && x.Loaitietkiem==loaitk)
+                .GroupBy(x => x.Ngaymoso!.Value.Date)
                 .Select(x => new { Ngaymoso = x.Key, Soluongmo = x.Count() });
 
             //lay cac so tiet kiem dong trong thang group by ngay dong
             var dsstkcongaydong = dal.GetList_SoTietKiem().Where(x => x.Ngaydongso != null);
-            var list_SoTietKiemDong = dsstkcongaydong.Where(x => x.Ngaydongso.Value.Month == thang && x.Ngaydongso.Value.Year == nam && x.Loaitietkiem == loaitk)
-                .GroupBy(x => x.Ngaydongso.Value.Date)
+            var list_SoTietKiemDong = dsstkcongaydong.Where(x => x.Ngaydongso!.Value.Month == thang && x.Ngaydongso!.Value.Year == nam && x.Loaitietkiem == loaitk)
+                .GroupBy(x => x.Ngaydongso!.Value.Date)
                 .Select(x => new { Ngaydongso = x.Key, Soluongdong = x.Count() });
             //join 2 list so tiet kiem mo va dong theo ngay va tinh chenh lech
             //outer join= left join + right join

@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:GUI_QLSTK"
     mc:Ignorable="d"
-    Title="Báo cáo doanh số hoạt động ngày"
+    Title="Báo cáo sổ đóng/mở tháng"
     WindowStartupLocation="CenterScreen"
     Loaded="Window_Loaded"
     Height="540"
@@ -45,7 +45,7 @@
             Grid.ColumnSpan="2">
 
             <Label
-                Content="Báo cáo doanh số hoạt động ngày"
+                Content="Báo cáo sổ đóng/mở tháng"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="30"
@@ -71,36 +71,36 @@
                     DockPanel.Dock="Top"
                     Height="50"
                     Orientation="Horizontal">
-                    <!--<Label
-                    Content="Loại tiết kiệm: "
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Foreground="Black"
-                    FontSize="16" />
+                    <Label
+                        Content="Loại tiết kiệm: "
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Foreground="Black"
+                        FontSize="16" />
 
-                <ComboBox
-                    x:Name="periodTypeComboBox"
-                    Margin="5"
-                    FontSize="20"
-                    d:Text="5 tháng"
-                    SelectedIndex="0"
-                    Width="250"
-                    Style="{DynamicResource ComboBoxStyle}">
+                    <ComboBox
+                        x:Name="periodTypeComboBox"
+                        Margin="5"
+                        FontSize="20"
+                        d:Text="5 tháng"
+                        SelectedIndex="0"
+                        Width="250"
+                        Style="{DynamicResource ComboBoxStyle}">
 
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel
-                                Orientation="Horizontal">
-                                <TextBlock
-                                    Text="{Binding Kyhan, Converter= {StaticResource PeriodToStringConverter}}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Text="{Binding Kyhan, Converter= {StaticResource PeriodToStringConverter}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
 
-                </ComboBox>-->
+                    </ComboBox>
 
                     <Label
-                        Content="Ngày: "
+                        Content="Tháng: "
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Foreground="Black"
@@ -114,7 +114,9 @@
                         Background="White"
                         BorderThickness="0"
                         d:SelectedDate="1/15/2023"
-                        Text="{Binding DayReport, StringFormat=dd/MM/yyyy}"
+                        CalendarOpened="reportDatePicker_CalendarOpened"
+                        SelectedDateChanged="reportDatePicker_SelectedDateChanged"
+                        Text="{Binding DayReport, StringFormat=MM/yyyy}"
                         Style="{DynamicResource DatePickerStyle}" />
 
                     <Button
@@ -164,20 +166,20 @@
                             FontSize="16" />
 
                         <DataGridTextColumn
-                            Binding="{Binding Loaitietkiem, Converter={StaticResource PeriodToStringConverter}}"
-                            Header="Loại tiết kiệm"
+                            Binding="{Binding Ngay, StringFormat=dd/MM/yyyy}"
+                            Header="Ngày"
                             Width="150"
                             FontSize="16" />
 
                         <DataGridTextColumn
-                            Binding="{Binding Tongtiengui}"
-                            Header="Tổng thu"
+                            Binding="{Binding Soluongmo}"
+                            Header="Số mở"
                             Width="*"
                             FontSize="16" />
 
                         <DataGridTextColumn
-                            Binding="{Binding Tongtienrut}"
-                            Header="Tổng chi"
+                            Binding="{Binding Soluongdong}"
+                            Header="Số đóng"
                             Width="*"
                             FontSize="16" />
 
@@ -218,6 +220,7 @@
 
         <ProgressBar
             x:Name="progressBar"
+            BorderThickness="0"
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2"
@@ -227,6 +230,22 @@
             Visibility="Hidden"
             IsIndeterminate="True"
             VerticalAlignment="Top" />
+
+        <!--#endregion-->
+
+        <!--#region Thông báo lỗi-->
+
+        <TextBlock
+            x:Name="errorTextBlock"
+            Grid.Row="2"
+            d:Text="Lỗi"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            TextWrapping="Wrap"
+            Width="350"
+            FontSize="20"
+            Margin="10 0 0 0"
+            Foreground="Red" />
 
     </Grid>
 
