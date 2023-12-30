@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BUS_QLSTK\BUS_QLSTK.csproj" />
     <ProjectReference Include="..\DTO_QLSTK\DTO_QLSTK.csproj" />
   </ItemGroup>

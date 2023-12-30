@@ -246,6 +246,8 @@
             FontSize="20"
             Margin="10 0 0 0"
             Foreground="Red" />
+        
+        <!--#endregion-->
 
     </Grid>
 

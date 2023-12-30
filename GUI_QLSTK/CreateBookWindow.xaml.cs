@@ -41,9 +41,8 @@ namespace GUI_QLSTK
 
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            periodTypeComboBox.ItemsSource = bus.getList_LoaiTietKiem();
             try
             {
                 progressLabel.Visibility = Visibility.Visible;
@@ -57,20 +56,55 @@ namespace GUI_QLSTK
 
                 bookIdTextBox.Text = bus.getNew_MaSo().ToString();
                 bookIdTextBox.IsReadOnly = true;
+                var list = new List<LoaiTietKiem>();
+                await Task.Run(() =>
+                {
+                    list = bus.getList_LoaiTietKiem();
+                    progressLabel.Visibility = Visibility.Collapsed;
+                });
 
+                while (progressLabel.Visibility == Visibility.Visible)
+                {
+                    // wait for loading to finish
+                }
+
+                periodTypeComboBox.ItemsSource = list;
                 this.DataContext = this;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            progressLabel.Visibility = Visibility.Collapsed;
 
         }
 
-        private void manageRegulationButton_Click(object sender, RoutedEventArgs e)
+        private async void manageRegulationButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Mở cửa sổ quản lý quy định
+            progressLabel.Visibility = Visibility.Visible;
+            var window = new ManageConfigWindow();
+            window.ShowDialog();
+
+            try
+            {
+                var list = new List<LoaiTietKiem>();
+                await Task.Run(() =>
+                {
+                    list = bus.getList_LoaiTietKiem();
+                    progressLabel.Visibility = Visibility.Collapsed;
+                });
+
+                while (progressLabel.Visibility == Visibility.Visible)
+                {
+                    // wait for loading to finish
+                }
+
+                periodTypeComboBox.ItemsSource = list;
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
         }
 
         private void createBookButton_Click(object sender, RoutedEventArgs e)

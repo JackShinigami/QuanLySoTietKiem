@@ -647,7 +647,7 @@ namespace BUS_QLSTK
             return result;
         }
 
-        public bool update_SoTienGuiToiThieu(int soTien)
+        public bool update_SoTienGuiToiThieu(long soTien)
         {
             var result = true;
 

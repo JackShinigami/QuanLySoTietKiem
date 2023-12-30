@@ -169,8 +169,8 @@ namespace GUI_QLSTK
 
         private void manageRegulationButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Điều hướng sang màn hình quản lý quy định
-
+            ManageConfigWindow window = new ManageConfigWindow();
+            window.ShowDialog();
         }
     }
 }

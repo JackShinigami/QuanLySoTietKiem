@@ -8,21 +8,12 @@ using System.Windows.Data;
 
 namespace GUI_QLSTK
 {
-    internal class PeriodToStringConverter: IValueConverter
+    class LongToVndConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int period = (int)value;
-            if(period == 0)
-            {
-                return "Không kì hạn";
-            } else if(period == -1)
-            {
-                return $"Chọn loại kì hạn";
-            } else
-            {
-                return $"{period} tháng";
-            }
+            var input = (long)value;
+            return input.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

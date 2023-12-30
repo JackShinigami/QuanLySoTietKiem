@@ -231,6 +231,7 @@
             VerticalAlignment="Top"
             IsIndeterminate="True"
             Visibility="Hidden" />
+        <!--#endregion-->
 
     </Grid>
 
