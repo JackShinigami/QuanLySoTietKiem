@@ -23,14 +23,14 @@ namespace GUI_QLSTK
     /// </summary>
     public partial class ManageConfigWindow : Window, INotifyPropertyChanged
     {
-        public long currentAmountMinimum { get; set; }
-        public long inputAmountMinimum { get; set; }
+        public long CurrentAmountMinimum { get; set; }
+        public long InputAmountMinimum { get; set; }
 
-        public int currentDayMinimum { get; set; }
-        public int inputDayMinimum { get; set; }
+        public int CurrentDayMinimum { get; set; }
+        public int InputDayMinimum { get; set; }
 
-        public double currentInterestRate { get; set; }
-        public double newInterestRate { get; set; }
+        public double CurrentInterestRate { get; set; }
+        public double NewInterestRate { get; set; }
 
         public bool IsLoading { get; set; }
 
@@ -53,8 +53,8 @@ namespace GUI_QLSTK
                 await Task.Run(() =>
                 {
                     list = getListPeriod();
-                    currentAmountMinimum = business.get_SoTienGuiToiThieu();
-                    currentDayMinimum = business.get_NgayGuiToiThieu();
+                    CurrentAmountMinimum = business.get_SoTienGuiToiThieu();
+                    CurrentDayMinimum = business.get_NgayGuiToiThieu();
                     IsLoading = false;
                 });
 
@@ -69,6 +69,7 @@ namespace GUI_QLSTK
             }
             interestRateComboBox.ItemsSource = list;
             periodTypeComboBox.ItemsSource = list;
+            this.DataContext = this;
             progressBar.Visibility = Visibility.Hidden;
         }
 
@@ -77,8 +78,8 @@ namespace GUI_QLSTK
         {
 
             List<LoaiTietKiem> list = business.getList_LoaiTietKiem();
-            list.Add(new LoaiTietKiem { Kyhan = -1, Laisuat = 0 }) ;
-            list.Sort(new Comparison<LoaiTietKiem>((x, y) => x.Kyhan.CompareTo(y.Kyhan)));            
+            list.Add(new LoaiTietKiem { Kyhan = -1, Laisuat = 0 });
+            list.Sort(new Comparison<LoaiTietKiem>((x, y) => x.Kyhan.CompareTo(y.Kyhan)));
             return list;
         }
 
@@ -90,11 +91,10 @@ namespace GUI_QLSTK
             progressBar.Visibility = Visibility.Visible;
             IsLoading = true;
             bool addSuccess = false;
-            bool removeSuccess = false;
 
-            if (periodTypeComboBox.SelectedIndex == 0 && periodTypeTextBox.Text.IsNullOrEmpty())
+            if (periodTypeTextBox.Text.IsNullOrEmpty())
             {
-                errorTextBlock.Text = "Vui lòng chọn hoặc nhập kì hạn cần thay đổi";
+                errorTextBlock.Text = "Vui lòng nhập kì hạn cần thêm";
                 return;
             }
 
@@ -121,15 +121,16 @@ namespace GUI_QLSTK
                         addSuccess = true;
                         IsLoading = false;
                     });
-                    
+
                     while (IsLoading)
                     {
                         // wait for loading to finish
                     }
-                    
+                    periodTypeComboBox.ItemsSource = list;
+                    interestRateComboBox.ItemsSource = list;
                     throw new Exception("Thêm thành công, vui lòng điều chỉnh lãi suất của kì hạn mới");
 
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -142,12 +143,26 @@ namespace GUI_QLSTK
                 }
             }
 
+            progressBar.Visibility = Visibility.Hidden; 
+
+        }
+
+
+        private void periodDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
+            successTextBlock.Text = "";
+            errorTextBlock.Text = "";
+            
+            bool removeSuccess = false;
             // Remove
-            try
+            var periodType = periodTypeComboBox.SelectedItem as LoaiTietKiem;
+            int period = 0;
+            if (periodType != null && periodType.Kyhan != -1)
             {
-                if (periodTypeComboBox.SelectedIndex != 0)
+                try
                 {
-                    var periodType = periodTypeComboBox.SelectedItem as LoaiTietKiem;
                     period = periodType!.Kyhan;
 
                     var list = new List<LoaiTietKiem>();
@@ -164,25 +179,28 @@ namespace GUI_QLSTK
                     {
                         // wait for loading to finish
                     }
+                    periodTypeComboBox.ItemsSource = list;
+                    interestRateComboBox.ItemsSource = list;
 
                     throw new Exception("Xóa thành công");
                 }
-            }
-            catch (Exception ex)
-            {
-                if(removeSuccess)
+
+                catch (Exception ex)
                 {
-                    if(successTextBlock.Text.IsNullOrEmpty()) successTextBlock.Text = ex.Message;
-                    else successTextBlock.Text += "; " + ex.Message;
-                } else
-                {
-                    if (errorTextBlock.Text.IsNullOrEmpty()) errorTextBlock.Text = ex.Message;
-                    else errorTextBlock.Text += "; " + ex.Message;
+                    if (removeSuccess)
+                    {
+                        successTextBlock.Text = ex.Message;
+                    } else
+                    {
+                        errorTextBlock.Text = ex.Message;
+                    }
                 }
+            } else
+            {
+                   errorTextBlock.Text = "Vui lòng chọn kì hạn cần xóa";
             }
 
             progressBar.Visibility = Visibility.Hidden;
-
         }
         #endregion
 
@@ -196,24 +214,18 @@ namespace GUI_QLSTK
             IsLoading = true;
             bool success = false;
 
+            LongToVndConverter longToVnd = new LongToVndConverter();
+
             try
             {
                 if (minAmountTextBox.Text.IsNullOrEmpty())
                 {
                     throw new Exception("Vui lòng nhập số tiền gửi tối thiểu");
                 }
-                try
-                {
-                    inputAmountMinimum = int.Parse(minAmountTextBox.Text);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Số tiền gửi tối thiểu không hợp lệ");
-                }
 
                 Task.Run(() =>
                 {
-                    business.update_SoTienGuiToiThieu(inputAmountMinimum);
+                    business.update_SoTienGuiToiThieu(InputAmountMinimum);
                     IsLoading = false;
                     success = true;
                 });
@@ -227,7 +239,8 @@ namespace GUI_QLSTK
             }
             catch (Exception ex)
             {
-                if (success) {                 
+                if (success)
+                {
                     successTextBlock.Text = ex.Message;
                 } else
                 {
@@ -237,6 +250,26 @@ namespace GUI_QLSTK
 
             progressBar.Visibility = Visibility.Hidden;
 
+        }
+
+
+        private void minAmountTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                errorTextBlock.Text = "";
+                LongToVndConverter longToVnd = new LongToVndConverter();
+                InputAmountMinimum = longToVnd.ConvertBack(minAmountTextBox.Text, null, null, null) as long? ?? -1;
+                if(InputAmountMinimum < 0)
+                {
+                    InputAmountMinimum = 0;
+                    throw new Exception("Số tiền gửi tối thiểu không hợp lệ");
+                }
+            }
+            catch (Exception ex)
+            {
+                errorTextBlock.Text = ex.Message;
+            }
         }
 
         #endregion
@@ -260,7 +293,7 @@ namespace GUI_QLSTK
                 }
                 try
                 {
-                    inputDayMinimum = int.Parse(minTimeTextBox.Text);
+                    InputDayMinimum = int.Parse(minTimeTextBox.Text);
                 }
                 catch (Exception ex)
                 {
@@ -269,7 +302,7 @@ namespace GUI_QLSTK
 
                 Task.Run(() =>
                 {
-                    business.update_NgayGuiToiThieu(inputDayMinimum);
+                    business.update_NgayGuiToiThieu(InputDayMinimum);
                     IsLoading = false;
                     success = true;
                 });
@@ -286,8 +319,7 @@ namespace GUI_QLSTK
                 if (success)
                 {
                     successTextBlock.Text = ex.Message;
-                }
-                else
+                } else
                 {
                     errorTextBlock.Text = ex.Message;
                 }
@@ -310,6 +342,9 @@ namespace GUI_QLSTK
             IsLoading = true;
             bool success = false;
 
+
+            FloatToPercent floatToPercent = new FloatToPercent();
+
             try
             {
 
@@ -325,18 +360,10 @@ namespace GUI_QLSTK
                     throw new Exception("Vui lòng nhập lãi suất");
                 }
 
-                try
-                {
-                    newInterestRate = double.Parse(interestRateTextBox.Text);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Lãi suất không hợp lệ");
-                }
-
                 Task.Run(() =>
                 {
-                    business.update_LoaiTietKiem(periodType!.Kyhan, newInterestRate);
+                    business.update_LoaiTietKiem(periodType!.Kyhan, NewInterestRate);
+                    CurrentInterestRate = NewInterestRate;
                     IsLoading = false;
                     success = true;
                 });
@@ -345,7 +372,6 @@ namespace GUI_QLSTK
                 {
                     // wait for loading to finish
                 }
-
                 throw new Exception("Cập nhật lãi suất thành công");
             }
             catch (Exception ex)
@@ -353,8 +379,7 @@ namespace GUI_QLSTK
                 if (success)
                 {
                     successTextBlock.Text = ex.Message;
-                }
-                else
+                } else
                 {
                     errorTextBlock.Text = ex.Message;
                 }
@@ -363,6 +388,54 @@ namespace GUI_QLSTK
             progressBar.Visibility = Visibility.Hidden;
 
         }
+
+        private void interestRateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // set CurrentInterestRate
+            var periodType = interestRateComboBox.SelectedItem as LoaiTietKiem;
+            if (periodType == null) return;
+            if (periodType.Kyhan == -1) return;
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
+            try
+            {
+                Task.Run(() =>
+                {
+                    var list = getListPeriod();
+                    CurrentInterestRate = list.Find(x => x.Kyhan == periodType!.Kyhan).Laisuat!.Value;
+                    IsLoading = false;
+                });
+
+                while (IsLoading)
+                {
+                    // wait for loading to finish
+                }
+            }
+            catch (Exception ex)
+            {
+                errorTextBlock.Text = ex.Message;
+            }
+            progressBar.Visibility = Visibility.Hidden;
+        }
+
+        private void interestRateTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                errorTextBlock.Text = "";
+                FloatToPercent floatToPercent = new FloatToPercent();
+                NewInterestRate = floatToPercent.ConvertBack(interestRateTextBox.Text, null, null, null) as double? ?? -1;
+                if (NewInterestRate < 0)
+                {
+                    NewInterestRate = 0;
+                    throw new Exception("Lãi suất không hợp lệ");
+                }
+            }
+            catch (Exception ex)
+            {
+                errorTextBlock.Text = ex.Message;
+            }
+        }
         #endregion
 
 
@@ -370,5 +443,6 @@ namespace GUI_QLSTK
         {
             this.Close();
         }
+
     }
 }

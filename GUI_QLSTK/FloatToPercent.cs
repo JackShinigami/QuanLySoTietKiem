@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace GUI_QLSTK
 {
-    class FloatToPercent: IValueConverter
+    class FloatToPercent : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -18,7 +18,13 @@ namespace GUI_QLSTK
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var input = (string)value;
-            return double.Parse(input.Replace("%", "")) / 100;
+
+            input = input.Replace("%", "");
+            if (!double.TryParse(input, out double result))
+            {
+                return -1;
+            }
+            return result / 100;
         }
     }
 }

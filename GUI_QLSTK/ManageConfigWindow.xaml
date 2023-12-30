@@ -77,9 +77,13 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
-                        Width="*" />
+                        Width="3*" />
                     <ColumnDefinition
-                        Width="170" />
+                        Width="140" />
+                    <ColumnDefinition
+                        Width="4*" />
+                    <ColumnDefinition
+                        Width="140" />
                 </Grid.ColumnDefinitions>
 
                 <StackPanel
@@ -110,6 +114,11 @@
                         FontSize="20"
                         Foreground="Black" />
 
+
+                </StackPanel>
+                <StackPanel
+                    Grid.Column="2"
+                    Orientation="Horizontal">
                     <Label
                         Content="|"
                         HorizontalAlignment="Left"
@@ -149,18 +158,30 @@
 
                 </StackPanel>
 
-                <!--#region Nút Lưu thay đổi-->
+                <!--#region Nút Thêm kì hạn-->
                 <Button
                     Grid.Column="1"
                     x:Name="periodSaveButton"
-                    Content="Lưu thay đổi"
+                    Content="Thêm kỳ hạn"
                     FontSize="20"
-                    Padding="10"
+                    Padding="8"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Style="{StaticResource GreyButtonStyle}"
                     Click="periodSaveButton_Click" />
                 <!--#endregion-->
+                
+                <!--#region Nút Xoá kì hạn-->
+                <Button
+                    Grid.Column="3"
+                    x:Name="periodDeleteButton"
+                    Content="Xoá kỳ hạn"
+                    FontSize="20"
+                    Padding="8"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource GreyButtonStyle}"
+                    Click="periodDeleteButton_Click" />
 
 
             </Grid>
@@ -201,7 +222,7 @@
                             Text="(Hiện tại:" />
                         <Run
                             d:Text="100.000VND"
-                            Text="{Binding currentAmountMinimum, Converter={StaticResource LongToVndConverter}}" />
+                            Text="{Binding CurrentAmountMinimum, Converter={StaticResource LongToVndConverter}}" />
                         <Run
                             Text="): " />
 
@@ -210,13 +231,14 @@
                     <TextBox
                         x:Name="minAmountTextBox"
                         d:Text="124.000 VND"
-                        Text="{Binding inputAmountMinimum, Converter={StaticResource LongToVndConverter}}"
+                        Text="{Binding InputAmountMinimum, Converter={StaticResource LongToVndConverter}}"
                         FontSize="20"
                         Height="50"
                         Width="240"
                         Padding="5"
                         TextAlignment="Right"
                         VerticalAlignment="Center"
+                        LostFocus="minAmountTextBox_LostFocus"
                         Style="{DynamicResource UnderlinedFocusTextBox}" />
 
                 </StackPanel>
@@ -274,7 +296,7 @@
                             Text="(Hiện tại:" />
                         <Run
                             d:Text="15"
-                            Text="{Binding currentDayMinimum}" />
+                            Text="{Binding CurrentDayMinimum}" />
                         <Run
                             Text="ngày): " />
 
@@ -403,6 +425,7 @@
                     Margin="10"
                     FontSize="20"
                     SelectedIndex="0"
+                    SelectionChanged="interestRateComboBox_SelectionChanged"
                     Style="{DynamicResource ComboBoxStyle}">
 
                     <ComboBox.ItemTemplate>
@@ -422,7 +445,7 @@
                     Grid.Column="1"
                     x:Name="currentInterestRateLabel"
                     d:Text="0.5%"
-                    Text="{Binding currentInterestRate, Converter={StaticResource FloatToPercent}}"
+                    Text="{Binding CurrentInterestRate, Converter={StaticResource FloatToPercent}}"
                     IsEnabled="False"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
@@ -439,13 +462,14 @@
                     Grid.Column="2"
                     x:Name="interestRateTextBox"
                     d:Text="0.5%"
-                    Text="{Binding newInterestRate, Converter={StaticResource FloatToPercent}}"
+                    Text="{Binding NewInterestRate, Converter={StaticResource FloatToPercent}}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     FontSize="20"
                     Padding="5"
                     Margin="10,0,0,0"
                     TextAlignment="Center"
+                    LostFocus="interestRateTextBox_LostFocus"
                     Style="{DynamicResource UnderlinedFocusTextBox}"
                     Foreground="Black"
                     Width="150" />
@@ -518,6 +542,7 @@
             x:Name="successTextBlock"
             Grid.Row="6"
             d:Text="Thành công"
+            TextAlignment="Right"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             TextWrapping="Wrap"
