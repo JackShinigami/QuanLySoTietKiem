@@ -98,7 +98,6 @@ namespace GUI_QLSTK
                 await Task.Run(() =>
                 {
                     list = bus.getList_LoaiTietKiem();
-                    progressBar.Visibility = Visibility.Collapsed;
                     IsLoading = false;
                 });
 
@@ -113,8 +112,7 @@ namespace GUI_QLSTK
             {
                 MessageBox.Show(ex.Message);
             }
-
-
+            progressBar.Visibility = Visibility.Collapsed;
         }
 
         private async void createBookButton_Click(object sender, RoutedEventArgs e)
