@@ -114,7 +114,7 @@ namespace BUS_QLSTK
             return result;  
         }
 
-        public long? get_SoTienCoTheRut(int maSo, string CCCD)
+        public long? get_SoTienCoTheRut(int maSo, string CCCD, DateTime ngayRut)
         {
             long? result = 0;
 
@@ -147,10 +147,14 @@ namespace BUS_QLSTK
             {
                 throw new Exception("Số CCCD không đúng");
             }
+            else if(ngayRut < soTietKiem.Ngaymoso)
+            {
+                throw new Exception("Ngày rút không hợp lệ");
+            }
 
             else if (soTietKiem.Loaitietkiem == 0)
             {
-                var soNgayGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days;
+                var soNgayGui = (ngayRut - soTietKiem.Ngaymoso)?.Days;
                 var listPhieuRut = PhieuRut.GetList_PhieuRut();
 
 
@@ -169,7 +173,7 @@ namespace BUS_QLSTK
                     }
                 }
 
-                var soThangGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days / 30;
+                var soThangGui = (ngayRut - soTietKiem.Ngaymoso)?.Days / 30;
 
                 if (latestDate != DateTime.MinValue)
                 {
@@ -184,7 +188,7 @@ namespace BUS_QLSTK
 
             else
             {
-                var soNgayGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days;
+                var soNgayGui = (ngayRut - soTietKiem.Ngaymoso)?.Days;
                 var soThangGui = soNgayGui / 30;
 
                 if (soThangGui < soTietKiem.Loaitietkiem)
@@ -247,10 +251,39 @@ namespace BUS_QLSTK
                 result = false;
                 throw new Exception("Số CCCD không đúng");
             }
+            else if (ngayGui < soTK.Ngaymoso)
+            {
+                result = false;
+                throw new Exception("Ngày gửi không hợp lệ");
+            }
 
             else
             {
+                var listPhieuRut = PhieuRut.GetList_PhieuRut();
+
+                DateTime? latestDate = DateTime.MinValue;
+
+                foreach (var phieuRut in listPhieuRut)
+                {
+                    if (phieuRut.Maso == maSo)
+                    {
+                        latestDate = phieuRut?.Ngayrut > latestDate ? phieuRut.Ngayrut : latestDate;
+                    }
+                }
+
+                var soThangGui = (ngayGui - soTK.Ngaymoso)?.Days / 30;
+
+                if (latestDate != DateTime.MinValue)
+                {
+                    var soThangDaTinhLai = (latestDate - soTK.Ngaymoso)?.Days / 30;
+
+                    soThangGui -= soThangDaTinhLai;
+                }
+
+                soTK.Sodu += (long)(soTK.Sodu * soTK.Laisuat * soThangGui);
+
                 soTK.Sodu += soTien;
+
                 SoTietKiem.Update_SoTietKiem(soTK);
 
             }
@@ -304,10 +337,15 @@ namespace BUS_QLSTK
                 result = false;
                 throw new Exception("Số CCCD không đúng");
             }
+            else if(ngayRut < soTietKiem.Ngaymoso)
+            {
+                result = false;
+                throw new Exception("Ngày rút không hợp lệ");
+            }
 
             else if (soTietKiem.Loaitietkiem == 0)
             {
-                var soNgayGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days;
+                var soNgayGui = (ngayRut - soTietKiem.Ngaymoso)?.Days;
 
                 if(soNgayGui < soTietKiem.Songayduocrut)
                 {
@@ -328,7 +366,7 @@ namespace BUS_QLSTK
                         }
                     }
 
-                    var soThangGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days / 30;
+                    var soThangGui = (ngayRut - soTietKiem.Ngaymoso)?.Days / 30;
 
                     if (latestDate != DateTime.MinValue)
                     {
@@ -367,7 +405,7 @@ namespace BUS_QLSTK
 
             else
             {
-                var soNgayGui = (DateTime.Now - soTietKiem.Ngaymoso)?.Days;
+                var soNgayGui = (ngayRut - soTietKiem.Ngaymoso)?.Days;
                 var soThangGui = soNgayGui / 30;
 
                 if(soThangGui < soTietKiem.Loaitietkiem)

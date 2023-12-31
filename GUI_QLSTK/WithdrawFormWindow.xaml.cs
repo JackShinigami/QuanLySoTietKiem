@@ -123,12 +123,19 @@ namespace GUI_QLSTK
                 var bookId = int.Parse(bookIdTextBox.Text);
                 var customerId = customerIDTextBox.Text;
 
+                if (withdrawDateDatePicker.SelectedDate == null)
+                {
+                    throw new Exception("Vui lòng chọn ngày mở sổ");
+                }
+
+                DateTime openDate = withdrawDateDatePicker.SelectedDate!.Value;
+
                 try
                 {
 
                     await Task.Run(() =>
                     {
-                        result = bus.get_SoTienCoTheRut(bookId, customerId);
+                        result = bus.get_SoTienCoTheRut(bookId, customerId,openDate);
                         IsLoading = false;
                     });
                     while (IsLoading)
