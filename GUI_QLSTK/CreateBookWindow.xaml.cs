@@ -33,6 +33,8 @@ namespace GUI_QLSTK
 
         public string OpenDate { get; set; }
 
+        public bool IsLoading { get; set; }
+
 
 
         public CreateBookWindow()
@@ -45,7 +47,9 @@ namespace GUI_QLSTK
         {
             try
             {
-                progressLabel.Visibility = Visibility.Visible;
+                progressBar.Visibility = Visibility.Visible;
+                IsLoading = true;
+
                 CultureInfo cultureInfo = new CultureInfo("vi-VN");
                 cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
                 cultureInfo.DateTimeFormat.DateSeparator = "/";
@@ -54,20 +58,23 @@ namespace GUI_QLSTK
                 openDateDatePicker.SelectedDate = DateTime.Now;
                 OpenDate = openDateDatePicker.SelectedDate!.Value.ToShortDateString();
 
-                bookIdTextBox.Text = bus.getNew_MaSo().ToString();
                 bookIdTextBox.IsReadOnly = true;
+                string newId = "";
                 var list = new List<LoaiTietKiem>();
                 await Task.Run(() =>
                 {
                     list = bus.getList_LoaiTietKiem();
-                    progressLabel.Visibility = Visibility.Collapsed;
+                    newId = bus.getNew_MaSo().ToString();
+                    IsLoading = false;
                 });
 
-                while (progressLabel.Visibility == Visibility.Visible)
+                while (IsLoading)
                 {
                     // wait for loading to finish
                 }
 
+                bookIdTextBox.Text = newId;
+                progressBar.Visibility = Visibility.Collapsed;
                 periodTypeComboBox.ItemsSource = list;
                 this.DataContext = this;
             }
@@ -80,7 +87,8 @@ namespace GUI_QLSTK
 
         private async void manageRegulationButton_Click(object sender, RoutedEventArgs e)
         {
-            progressLabel.Visibility = Visibility.Visible;
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
             var window = new ManageConfigWindow();
             window.ShowDialog();
 
@@ -90,10 +98,11 @@ namespace GUI_QLSTK
                 await Task.Run(() =>
                 {
                     list = bus.getList_LoaiTietKiem();
-                    progressLabel.Visibility = Visibility.Collapsed;
+                    progressBar.Visibility = Visibility.Collapsed;
+                    IsLoading = false;
                 });
 
-                while (progressLabel.Visibility == Visibility.Visible)
+                while (IsLoading)
                 {
                     // wait for loading to finish
                 }
@@ -107,12 +116,13 @@ namespace GUI_QLSTK
 
         }
 
-        private void createBookButton_Click(object sender, RoutedEventArgs e)
+        private async void createBookButton_Click(object sender, RoutedEventArgs e)
         {
 
 
             bool result = false;
-            progressLabel.Visibility = Visibility.Visible;
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
 
             try
             {
@@ -151,8 +161,16 @@ namespace GUI_QLSTK
                 }
 
                 DateTime openDate = openDateDatePicker.SelectedDate!.Value;
-
-                result = bus.create_SoTietKiem(id, idCard, customer, address, period, deposit, openDate);
+                
+                await Task.Run(() =>
+                {
+                    result = bus.create_SoTietKiem(id, idCard, customer, address, period, deposit, openDate);
+                    IsLoading = false;
+                });
+                while (IsLoading)
+                {
+                    // wait for loading to finish
+                }
             }
             catch (Exception ex)
             {
@@ -167,7 +185,7 @@ namespace GUI_QLSTK
             {
                 MessageBox.Show("Tạo sổ tiết kiệm thất bại");
             }
-            progressLabel.Visibility = Visibility.Collapsed;
+            progressBar.Visibility = Visibility.Collapsed;
 
         }
 

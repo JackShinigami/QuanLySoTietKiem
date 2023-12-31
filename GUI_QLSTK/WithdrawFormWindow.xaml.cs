@@ -25,15 +25,18 @@ namespace GUI_QLSTK
         Business bus = Business.Instance;
         public string WithdrawDate;
 
+        public bool IsLoading { get; set; }
+
         public WithdrawFormWindow()
         {
             InitializeComponent();
         }
 
-        private void completeFormButton_Click(object sender, RoutedEventArgs e)
+        private async void completeFormButton_Click(object sender, RoutedEventArgs e)
         {
             bool result = false;
-            progressStackPanel.Visibility = Visibility.Visible;
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
 
             try
             {
@@ -56,7 +59,15 @@ namespace GUI_QLSTK
                 }
 
                 var withdrawDate = withdrawDateDatePicker.SelectedDate!.Value;
-                result = bus.create_PhieuRut(BookId, CustomerID, withdraw, withdrawDate);
+                await Task.Run(() =>
+                {
+                    result = bus.create_PhieuRut(BookId, CustomerID, withdraw, withdrawDate);
+                    IsLoading = false;
+                }); 
+                while (IsLoading)
+                {
+                    // wait for IsLoading to be false
+                }
             }
             catch (Exception ex)
             {
@@ -70,7 +81,7 @@ namespace GUI_QLSTK
                 MessageBox.Show("Tạo phiếu rút thành công");
                 this.Close();
             }
-            progressStackPanel.Visibility = Visibility.Collapsed;
+            progressBar.Visibility = Visibility.Collapsed;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -91,10 +102,11 @@ namespace GUI_QLSTK
 
         }
 
-        private void checkInfoButton_Click(object sender, RoutedEventArgs e)
+        private async void checkInfoButton_Click(object sender, RoutedEventArgs e)
         {
             long? result = null;
-            progressStackPanel.Visibility = Visibility.Visible;
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
 
             try
             {
@@ -113,7 +125,16 @@ namespace GUI_QLSTK
 
                 try
                 {
-                    result = bus.get_SoTienCoTheRut(bookId, customerId);
+
+                    await Task.Run(() =>
+                    {
+                        result = bus.get_SoTienCoTheRut(bookId, customerId);
+                        IsLoading = false;
+                    });
+                    while (IsLoading)
+                    {
+                        // wait for IsLoading to be false
+                    }
 
                     if (result != null)
                     {
@@ -164,7 +185,7 @@ namespace GUI_QLSTK
                 withdrawTextBox.Text = "";
                 infoFaultLabel.Content = ex.Message;
             }
-            progressStackPanel.Visibility = Visibility.Collapsed;
+            progressBar.Visibility = Visibility.Collapsed;
         }
 
         private void manageRegulationButton_Click(object sender, RoutedEventArgs e)

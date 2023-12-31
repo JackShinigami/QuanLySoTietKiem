@@ -309,23 +309,20 @@
         </StackPanel>
         <!--#endregion-->
         
-        <!--#region Tiến độ-->
-        <StackPanel
-            x:Name="progressStackPanel"
-            Orientation="Vertical"
-            Grid.Row="5"
+
+        <!--#region tiến độ-->
+        <ProgressBar
+            x:Name="progressBar"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Visibility="Hidden"
-            Margin="10">
-
-            <Label
-                x:Name="progressLabel"
-                d:Content="Đang xử lí..."
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Foreground="Black" />
-        </StackPanel>
+            Grid.Row="0"
+            Margin="20 5 20 13"
+            Height="5"
+            Background="#fff"
+            BorderThickness="0"
+            VerticalAlignment="Bottom"
+            IsIndeterminate="True"
+            Visibility="Collapsed" />
         <!--#endregion-->
 
 

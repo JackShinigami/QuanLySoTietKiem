@@ -205,20 +205,19 @@
 
         <!--#endregion-->
 
-        <!--#region Tiến độ-->
-
-        <Label
-            x:Name="progressLabel"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+        <!--#region tiến độ-->
+        <ProgressBar
+            x:Name="progressBar"
             Grid.Column="0"
-            Grid.Row="4"
             Grid.ColumnSpan="2"
-            Foreground="Black"
-            FontSize="20"
-            Visibility="Hidden"
-            Content="Đang xử lý..." />
-
+            Grid.Row="0"
+            Margin="20 5 20 13"
+            Height="5"
+            Background="#fff"
+            BorderThickness="0"
+            VerticalAlignment="Bottom"
+            IsIndeterminate="True"
+            Visibility="Hidden" />
         <!--#endregion-->
     </Grid>
 </Window>

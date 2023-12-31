@@ -27,6 +27,8 @@ namespace GUI_QLSTK
 
         Business bus = Business.Instance;
 
+        public bool IsLoading { get; set; }
+
         public DepositFormWindow()
         {
             InitializeComponent();
@@ -39,12 +41,13 @@ namespace GUI_QLSTK
             this.Close();
         }
 
-        private void completeFormButton_Click(object sender, RoutedEventArgs e)
+        private async void completeFormButton_Click(object sender, RoutedEventArgs e)
         {
 
 
             bool result = false;
-            progressLabel.Visibility = Visibility.Visible;
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
 
             try
             {
@@ -92,7 +95,16 @@ namespace GUI_QLSTK
                 {
                     throw new Exception("Số tiền gửi phải lớn hơn 0");
                 }
-                result = bus.create_PhieuGui(bookId, customerID, deposit, depositDate);
+                await Task.Run(() =>
+                {
+                    result = bus.create_PhieuGui(bookId, customerID, deposit, depositDate);
+                    IsLoading = false;
+                });
+
+                while (IsLoading)
+                {
+                       // wait for loading to finish
+                }
             }
             catch (Exception ex)
             {
@@ -104,7 +116,7 @@ namespace GUI_QLSTK
                 MessageBox.Show("Tạo phiếu gửi thành công");
                 this.Close();
             }
-            progressLabel.Visibility = Visibility.Collapsed;
+            progressBar.Visibility = Visibility.Collapsed;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
