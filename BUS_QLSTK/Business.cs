@@ -41,6 +41,17 @@ namespace BUS_QLSTK
         }
         public bool create_SoTietKiem(int maSo, string CCCD, string tenKH, string diaChi, int kyHan, long soTien, DateTime ngayMoSo)
         {
+            //check cccd size > 12 and cccd is not number
+            if (CCCD.Length != 12 || CCCD.Any(x => !char.IsDigit(x)))
+            {
+                throw new Exception("Số CCCD không hợp lệ");
+            }
+
+            if(soTien < 0)
+            {
+                throw new Exception("Số tiền không hợp lệ");
+            }
+
             var soTietKiem = new SoTietKiem();
             soTietKiem.Maso = maSo;
             soTietKiem.Cccd = CCCD;
@@ -256,6 +267,11 @@ namespace BUS_QLSTK
                 result = false;
                 throw new Exception("Ngày gửi không hợp lệ");
             }
+            else if(soTien < 0)
+            {
+                result = false;
+                throw new Exception("Số tiền không hợp lệ");
+            }
 
             else
             {
@@ -341,6 +357,11 @@ namespace BUS_QLSTK
             {
                 result = false;
                 throw new Exception("Ngày rút không hợp lệ");
+            }
+            else if (soTien < 0)
+            {
+                result = false;
+                throw new Exception("Số tiền không hợp lệ");
             }
 
             else if (soTietKiem.Loaitietkiem == 0)
