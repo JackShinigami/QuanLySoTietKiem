@@ -33,7 +33,7 @@ public partial class QlStkContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
        GetServerName();
-       optionsBuilder.UseSqlServer("Data Source=DESKTOP-3TQQ5PF\\MSSQLSERVER01; Trusted_Connection=Yes; Initial Catalog=QL_STK; TrustServerCertificate=True");
+       optionsBuilder.UseSqlServer("Data Source=.\\SqlExpress; Trusted_Connection=Yes; Initial Catalog=QL_STK; TrustServerCertificate=True");
     }
     public static void GetServerName()
     {
