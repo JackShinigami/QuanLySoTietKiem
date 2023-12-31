@@ -43,7 +43,7 @@ namespace GUI_QLSTK
                 var list = new List<LoaiTietKiem>();
                 await Task.Run(() =>
                 {
-                    list = business.getList_LoaiTietKiem();
+                    list = business.getList_LoaiTietKiemInHistory();
                     IsLoading = false;
                 });
 
