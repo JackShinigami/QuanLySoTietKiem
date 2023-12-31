@@ -96,12 +96,13 @@ namespace DAL_QLSTK
             if (configToithieus.Count == 0)
             {
                 ConfigToithieu configToithieu = new ConfigToithieu();
+                configToithieu.Id = "ConfigID";
                 configToithieu.Sotiengui = sotiengui;
                 context.ConfigToithieus.Add(configToithieu);
             }
             else
             {
-                context.ConfigToithieus.First().Sotiengui = sotiengui;
+                context.ConfigToithieus.FirstOrDefault().Sotiengui = sotiengui;
             }
             context.SaveChanges();
         }
@@ -127,12 +128,13 @@ namespace DAL_QLSTK
             if (configToithieus.Count == 0)
             {
                 ConfigToithieu configToithieu = new ConfigToithieu();
+                configToithieu.Id = "ConfigID";
                 configToithieu.Ngaygui = ngaygui;
                 context.ConfigToithieus.Add(configToithieu);
             }
             else
             {
-                context.ConfigToithieus.First().Ngaygui = ngaygui;
+                context.ConfigToithieus.FirstOrDefault().Ngaygui = ngaygui;
             }
             context.SaveChanges();
         }

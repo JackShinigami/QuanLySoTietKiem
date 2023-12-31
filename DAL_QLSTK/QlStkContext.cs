@@ -36,10 +36,12 @@ public partial class QlStkContext : DbContext
     {
         modelBuilder.Entity<ConfigToithieu>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("CONFIG_TOITHIEU");
+            entity.ToTable("CONFIG_TOITHIEU");
 
+            entity.Property(e => e.Id)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("ID");
             entity.Property(e => e.Ngaygui).HasColumnName("NGAYGUI");
             entity.Property(e => e.Sotiengui).HasColumnName("SOTIENGUI");
         });
