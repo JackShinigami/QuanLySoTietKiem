@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using DTO_QLSTK;
+
 namespace DAL_QLSTK;
 
 public partial class QlStkContext : DbContext
@@ -36,11 +37,13 @@ public partial class QlStkContext : DbContext
     {
         modelBuilder.Entity<ConfigToithieu>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK_CONFIG");
+
             entity.ToTable("CONFIG_TOITHIEU");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(10)
-                .IsFixedLength()
+                .IsUnicode(false)
                 .HasColumnName("ID");
             entity.Property(e => e.Ngaygui).HasColumnName("NGAYGUI");
             entity.Property(e => e.Sotiengui).HasColumnName("SOTIENGUI");
@@ -55,7 +58,6 @@ public partial class QlStkContext : DbContext
             entity.Property(e => e.Cccd)
                 .HasMaxLength(12)
                 .IsUnicode(false)
-                .IsFixedLength()
                 .HasColumnName("CCCD");
             entity.Property(e => e.Diachi)
                 .HasMaxLength(150)
@@ -129,7 +131,6 @@ public partial class QlStkContext : DbContext
             entity.Property(e => e.Cccd)
                 .HasMaxLength(12)
                 .IsUnicode(false)
-                .IsFixedLength()
                 .HasColumnName("CCCD");
             entity.Property(e => e.Laisuat).HasColumnName("LAISUAT");
             entity.Property(e => e.Loaitietkiem).HasColumnName("LOAITIETKIEM");
