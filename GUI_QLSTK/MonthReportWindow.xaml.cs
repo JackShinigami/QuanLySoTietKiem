@@ -38,73 +38,87 @@ namespace GUI_QLSTK
         {
             IsLoading = true;
             progressBar.Visibility = Visibility.Visible;
-            var list = new List<LoaiTietKiem>();
-            await Task.Run(() =>
-            {
-                list = business.getList_LoaiTietKiem();
-                IsLoading = false;
-            });
-
-            CultureInfo cultureInfo = new CultureInfo("vi-VN");
-            cultureInfo.DateTimeFormat.ShortDatePattern = "MM/yyyy";
-            cultureInfo.DateTimeFormat.DateSeparator = "/";
-            Thread.CurrentThread.CurrentCulture = cultureInfo;
-
-            reportDatePicker.SelectedDate = DateTime.Now;
-            ReportDate = reportDatePicker.SelectedDate!.Value.ToShortDateString();
-            // thay đổi datepicker sang chế độ chọn tháng
-            reportDatePicker.DisplayDateEnd = DateTime.Now;
-            while(IsLoading)
-            {
-                // wait for loading to finish
-            }
-            periodTypeComboBox.ItemsSource = list;
-            progressBar.Visibility = Visibility.Hidden;
-        }
-
-        private async Task reportButton_ClickAsync(object sender, RoutedEventArgs e)
-        {
-
-            progressBar.Visibility = Visibility.Visible;
-            IsLoading = true;
-            var list = new List<dynamic>();
-            DateTime date = reportDatePicker.SelectedDate!.Value;
-            var month = (int)date.Month;
-            var year = (int)date.Year;
-            var periodType = periodTypeComboBox.SelectedItem as LoaiTietKiem;
-            int period = 0;
-            if (periodType != null)
-            {
-                period = periodType.Kyhan;
-            } else
-            {
-                throw new Exception("Vui lòng chọn loại tiết kiệm");
-            }
-
-            await Task.Run(() =>
-            {
-                list = business.getList_BaoCaoDongMoSoThang(month, year, period);
-                IsLoading = false;
-            });
-
-            while (IsLoading)
-            {
-                // wait for loading to finish
-            }
-            reportDataGrid.ItemsSource = list;
-            progressBar.Visibility = Visibility.Hidden;
-        }
-
-        private void reportButton_Click(object sender, RoutedEventArgs e)
-        {
             try
             {
-                _ = reportButton_ClickAsync(sender, e);
+                var list = new List<LoaiTietKiem>();
+                await Task.Run(() =>
+                {
+                    list = business.getList_LoaiTietKiem();
+                    IsLoading = false;
+                });
+
+                CultureInfo cultureInfo = new CultureInfo("vi-VN");
+                cultureInfo.DateTimeFormat.ShortDatePattern = "MM/yyyy";
+                cultureInfo.DateTimeFormat.DateSeparator = "/";
+                Thread.CurrentThread.CurrentCulture = cultureInfo;
+
+                reportDatePicker.SelectedDate = DateTime.Now;
+                ReportDate = reportDatePicker.SelectedDate!.Value.ToShortDateString();
+                // thay đổi datepicker sang chế độ chọn tháng
+                reportDatePicker.DisplayDateEnd = DateTime.Now;
+                while (IsLoading)
+                {
+                    // wait for loading to finish
+                }
+                periodTypeComboBox.ItemsSource = list;
             }
             catch (Exception ex)
             {
                 errorTextBlock.Text = ex.Message;
             }
+            progressBar.Visibility = Visibility.Hidden;
+        }
+
+        private async void reportButton_Click(object sender, RoutedEventArgs e)
+        {
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
+            try
+            {
+
+                var list = new List<dynamic>();
+                DateTime date = DateTime.Now;
+                try
+                {
+                    date = reportDatePicker.SelectedDate!.Value;
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Vui lòng chọn tháng báo cáo");
+                }
+                var month = (int)date.Month;
+                var year = (int)date.Year;
+                var periodType = periodTypeComboBox.SelectedItem as LoaiTietKiem;
+                int period = 0;
+                if (periodType != null)
+                {
+                    period = periodType.Kyhan;
+                } else
+                {
+                    throw new Exception("Vui lòng chọn loại tiết kiệm");
+                }
+
+                await Task.Run(() =>
+                {
+                    list = business.getList_BaoCaoDongMoSoThang(month, year, period);
+                    IsLoading = false;
+                });
+
+                while (IsLoading)
+                {
+                    // wait for loading to finish
+                }
+                reportDataGrid.ItemsSource = list;
+                if (list.Count == 0)
+                {
+                    throw new Exception("Không có hoạt động đóng mở/sổ nào");
+                }
+            }
+            catch (Exception ex)
+            {
+                errorTextBlock.Text = ex.Message;
+            }
+            progressBar.Visibility = Visibility.Hidden;
 
         }
 
@@ -136,17 +150,25 @@ namespace GUI_QLSTK
             if (calendar != null)
             {
                 calendar.DisplayMode = CalendarMode.Year;
+
                 calendar.DisplayModeChanged += (s, ev) =>
                 {
-                    if(calendar.DisplayMode == CalendarMode.Month)
+                    if (calendar.DisplayMode == CalendarMode.Month)
                     {
                         // chọn đại ngày 1 của tháng (tại khom biết tắt hộp thoại khi mới đổi tháng)
                         calendar.SelectedDate = new DateTime(calendar.DisplayDate.Year, calendar.DisplayDate.Month, 1);
-                        popup!.IsOpen = false;
+                        reportDatePicker.SelectedDate = calendar.SelectedDate;
+                        reportDatePicker.IsDropDownOpen = false;
+                    } else
+                    {
+                        reportDatePicker.IsDropDownOpen = true;
                     }
                 };
-                
+
             }
+
         }
+
+
     }
 }

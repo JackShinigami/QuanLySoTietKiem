@@ -45,10 +45,10 @@ namespace GUI_QLSTK
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            progressBar.Visibility = Visibility.Visible;
+            IsLoading = true;
             try
             {
-                progressBar.Visibility = Visibility.Visible;
-                IsLoading = true;
 
                 CultureInfo cultureInfo = new CultureInfo("vi-VN");
                 cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
@@ -74,7 +74,6 @@ namespace GUI_QLSTK
                 }
 
                 bookIdTextBox.Text = newId;
-                progressBar.Visibility = Visibility.Collapsed;
                 periodTypeComboBox.ItemsSource = list;
                 this.DataContext = this;
             }
@@ -82,6 +81,7 @@ namespace GUI_QLSTK
             {
                 MessageBox.Show(ex.Message);
             }
+            progressBar.Visibility = Visibility.Collapsed;
 
         }
 
@@ -108,7 +108,8 @@ namespace GUI_QLSTK
                 }
 
                 periodTypeComboBox.ItemsSource = list;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -126,23 +127,23 @@ namespace GUI_QLSTK
 
             try
             {
-                if(customerTextBox.Text == "")
+                if (customerTextBox.Text == "")
                 {
                     throw new Exception("Vui lòng nhập tên khách hàng");
                 }
-                if(idCardTextBox.Text == "")
+                if (idCardTextBox.Text == "")
                 {
                     throw new Exception("Vui lòng nhập số CMND");
                 }
-                if(addressTextBox.Text == "")
+                if (addressTextBox.Text == "")
                 {
                     throw new Exception("Vui lòng nhập địa chỉ");
                 }
-                if(depositTextBox.Text == "")
+                if (depositTextBox.Text == "")
                 {
                     throw new Exception("Vui lòng nhập số tiền gửi");
                 }
-                if(periodTypeComboBox.SelectedItem == null)
+                if (periodTypeComboBox.SelectedItem == null)
                 {
                     throw new Exception("Vui lòng chọn loại tiết kiệm");
                 }
@@ -155,13 +156,13 @@ namespace GUI_QLSTK
                 string customer = customerTextBox.Text;
                 string address = addressTextBox.Text;
 
-                if(openDateDatePicker.SelectedDate == null)
+                if (openDateDatePicker.SelectedDate == null)
                 {
                     throw new Exception("Vui lòng chọn ngày mở sổ");
                 }
 
                 DateTime openDate = openDateDatePicker.SelectedDate!.Value;
-                
+
                 await Task.Run(() =>
                 {
                     result = bus.create_SoTietKiem(id, idCard, customer, address, period, deposit, openDate);

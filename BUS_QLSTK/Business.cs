@@ -403,15 +403,22 @@ namespace BUS_QLSTK
         public int getNew_MaSo()
         {
             DAL_SoTietKiem dal = DAL_SoTietKiem.Instance;
-            var list_SoTietKiem = dal.GetList_SoTietKiem();
-
-            if(list_SoTietKiem.Count == 0)
+            try
             {
-                return 1000001;
+                var list_SoTietKiem = dal.GetList_SoTietKiem();
+
+                if (list_SoTietKiem.Count == 0)
+                {
+                    return 1000001;
+                }
+                var max = list_SoTietKiem.Max(x => x.Maso);
+                var res = max + 1;
+                return res;
             }
-            var max = list_SoTietKiem.Max(x => x.Maso);
-            var res = max + 1;
-            return res;
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public int getNew_MaPhieuGui()
@@ -564,8 +571,14 @@ namespace BUS_QLSTK
         public List<LoaiTietKiem> getList_LoaiTietKiem()
         {   
             DAL_Config dal = DAL_Config.Instance;
-            var list_LoaiTietKiem = dal.GetList_LoaiTietKiem();
-            return list_LoaiTietKiem;
+            try
+            {
+                var list_LoaiTietKiem = dal.GetList_LoaiTietKiem();
+                return list_LoaiTietKiem;
+            } catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public bool add_LoaiTietKiem(int kyHan, double laiSuat)
@@ -588,6 +601,7 @@ namespace BUS_QLSTK
             catch (Exception e)
             {
                 result = false;
+                throw new Exception(e.Message);
             }
             return result;
         }

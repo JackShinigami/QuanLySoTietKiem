@@ -33,9 +33,9 @@ namespace GUI_QLSTK
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            progressBar.Visibility = Visibility.Visible;
             try
             {
-                progressBar.Visibility = Visibility.Visible;
 
                 bool loading = true;
                 var list = new List<dynamic>();
@@ -50,13 +50,16 @@ namespace GUI_QLSTK
                     // wait for loading to finish
                 }
                 lookUpDataGrid.ItemsSource = list;
-
-
-                progressBar.Visibility = Visibility.Hidden;
-            } catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                if (list.Count == 0)
+                {
+                    throw new Exception("Không có sổ tiết kiệm nào");
+                }
             }
+            catch (Exception ex)
+            {
+                errorTextBlock.Text = ex.Message;
+            }
+            progressBar.Visibility = Visibility.Hidden;
 
         }
 

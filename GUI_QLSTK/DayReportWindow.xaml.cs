@@ -61,18 +61,24 @@ namespace GUI_QLSTK
 
             progressBar.Visibility = Visibility.Visible;
             IsLoading = true;
-            var list = new List<dynamic>();
-            await Task.Run(() =>
+            try
             {
-                list = business.getList_DoanhSoNgay(date);
-                IsLoading = false;
-            });
+                var list = new List<dynamic>();
+                await Task.Run(() =>
+                {
+                    list = business.getList_DoanhSoNgay(date);
+                    IsLoading = false;
+                });
 
-            while (IsLoading)
+                while (IsLoading)
+                {
+                    // wait for loading to finish
+                }
+                reportDataGrid.ItemsSource = list;
+            } catch (Exception ex)
             {
-                // wait for loading to finish
+                errorTextBlock.Text = ex.Message;
             }
-            reportDataGrid.ItemsSource = list;
             progressBar.Visibility = Visibility.Collapsed;
         }
 

@@ -226,6 +226,7 @@ namespace GUI_QLSTK
                 Task.Run(() =>
                 {
                     business.update_SoTienGuiToiThieu(InputAmountMinimum);
+                    CurrentAmountMinimum = business.get_SoTienGuiToiThieu();
                     IsLoading = false;
                     success = true;
                 });
@@ -303,6 +304,7 @@ namespace GUI_QLSTK
                 Task.Run(() =>
                 {
                     business.update_NgayGuiToiThieu(InputDayMinimum);
+                    CurrentDayMinimum = business.get_NgayGuiToiThieu();
                     IsLoading = false;
                     success = true;
                 });
@@ -363,7 +365,7 @@ namespace GUI_QLSTK
                 Task.Run(() =>
                 {
                     business.update_LoaiTietKiem(periodType!.Kyhan, NewInterestRate);
-                    CurrentInterestRate = NewInterestRate;
+                    CurrentInterestRate = business.getList_LoaiTietKiem().Find(x => x.Kyhan == periodType!.Kyhan).Laisuat!.Value;
                     IsLoading = false;
                     success = true;
                 });

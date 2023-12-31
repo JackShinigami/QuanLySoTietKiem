@@ -229,6 +229,22 @@
             BorderThickness="0"
             VerticalAlignment="Top"/>
 
+        <!--#region Thông báo lỗi-->
+
+        <TextBlock
+            x:Name="errorTextBlock"
+            Grid.Row="2"
+            d:Text="Lỗi"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            TextWrapping="Wrap"
+            Width="350"
+            FontSize="20"
+            Margin="10 0 0 0"
+            Foreground="Red" />
+
+        <!--#endregion-->
+
     </Grid>
     
 </Window>

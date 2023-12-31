@@ -19,7 +19,7 @@ namespace GUI_QLSTK
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var input = (string)value;
-            input = input.Replace("₫", "").Replace(",", "");
+            input = input.Replace("₫", "").Replace(",", "").Replace(" ", "");
             if (!long.TryParse(input, out long result))
             {
                 return -1;
