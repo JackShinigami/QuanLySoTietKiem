@@ -115,15 +115,21 @@ namespace GUI_QLSTK
 
         private void reportDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            CultureInfo cultureInfo = new CultureInfo("vi-VN");
+            cultureInfo.DateTimeFormat.ShortDatePattern = "MM/yyyy";
+            cultureInfo.DateTimeFormat.DateSeparator = "/";
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
             // Xoá ngày khỏi ReportDate (sang dạng MM/yyyy)
-            DateTime date = reportDatePicker.SelectedDate!.Value;
-            ReportDate = $"{(int)date.Month}/{(int)date.Year}";
-            reportDatePicker.Text = $"{(int)date.Month}/{(int)date.Year}";
         }
 
         private void reportDatePicker_CalendarOpened(object sender, RoutedEventArgs e)
         {
             // move to selected month mode
+
+            CultureInfo cultureInfo = new CultureInfo("vi-VN");
+            cultureInfo.DateTimeFormat.ShortDatePattern = "MM/yyyy";
+            cultureInfo.DateTimeFormat.DateSeparator = "/";
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
             var datePicker = sender as DatePicker;
             var popup = datePicker?.Template.FindName("PART_Popup", datePicker) as Popup;
             var calendar = popup?.Child as System.Windows.Controls.Calendar;
