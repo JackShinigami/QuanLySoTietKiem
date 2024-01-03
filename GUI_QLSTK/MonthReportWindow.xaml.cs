@@ -72,6 +72,7 @@ namespace GUI_QLSTK
         private async void reportButton_Click(object sender, RoutedEventArgs e)
         {
             progressBar.Visibility = Visibility.Visible;
+            errorTextBlock.Text = "";
             IsLoading = true;
             try
             {
