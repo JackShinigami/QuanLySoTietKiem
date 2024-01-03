@@ -47,6 +47,10 @@ namespace GUI_QLSTK
         {
             progressBar.Visibility = Visibility.Visible;
             IsLoading = true;
+            // disable all buttons
+            manageRegulationButton.IsEnabled = false;
+            createBookButton.IsEnabled = false;
+
             try
             {
 
@@ -83,6 +87,9 @@ namespace GUI_QLSTK
             }
             progressBar.Visibility = Visibility.Collapsed;
 
+            manageRegulationButton.IsEnabled = true ;
+            createBookButton.IsEnabled = true;
+
         }
 
         private async void manageRegulationButton_Click(object sender, RoutedEventArgs e)
@@ -98,7 +105,6 @@ namespace GUI_QLSTK
                 await Task.Run(() =>
                 {
                     list = bus.getList_LoaiTietKiem();
-                    progressBar.Visibility = Visibility.Collapsed;
                     IsLoading = false;
                 });
 
@@ -113,8 +119,7 @@ namespace GUI_QLSTK
             {
                 MessageBox.Show(ex.Message);
             }
-
-
+            progressBar.Visibility = Visibility.Collapsed;
         }
 
         private async void createBookButton_Click(object sender, RoutedEventArgs e)
@@ -193,6 +198,16 @@ namespace GUI_QLSTK
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void openDateDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CultureInfo cultureInfo = new CultureInfo("vi-VN");
+            cultureInfo.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+            cultureInfo.DateTimeFormat.DateSeparator = "/";
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            OpenDate = openDateDatePicker.SelectedDate!.Value.ToShortDateString();
+            openDateDatePicker.Text = OpenDate;
         }
     }
 }

@@ -79,7 +79,7 @@ namespace GUI_QLSTK
                 {
                     bookId = int.Parse(bookIdTextBox.Text);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw new Exception("Mã sổ không hợp lệ");
                 }

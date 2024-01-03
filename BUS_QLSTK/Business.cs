@@ -42,7 +42,7 @@ namespace BUS_QLSTK
         public bool create_SoTietKiem(int maSo, string CCCD, string tenKH, string diaChi, int kyHan, long soTien, DateTime ngayMoSo)
         {
             //check cccd size > 12 and cccd is not number
-            if (CCCD.Length != 12 || CCCD.Any(x => !char.IsDigit(x)))
+            if ((CCCD.Length != 12 && CCCD.Length != 9)|| CCCD.Any(x => !char.IsDigit(x)))
             {
                 throw new Exception("Số CCCD không hợp lệ");
             }
@@ -625,6 +625,14 @@ namespace BUS_QLSTK
             var list_BaoCaoDongMoSoThang3 = list_BaoCaoDongMoSoThang2.Select((x, index) => new { Stt = list_Stt[index], x.Ngay, x.Soluongmo, x.Soluongdong, x.Chenhlech });
             var result = list_BaoCaoDongMoSoThang3.ToList<dynamic>();
             return result;
+        }
+
+        public List<LoaiTietKiem> getList_LoaiTietKiemInHistory()
+        {
+            var list_LoaiTietKiem = DAL_SoTietKiem.Instance.GetList_SoTietKiem().Select(x => x.Loaitietkiem).Distinct().OrderBy(x => x);
+            var res = list_LoaiTietKiem.Select(x => new LoaiTietKiem { Kyhan = (int)x, Laisuat = 0 }).ToList();
+
+            return res.ToList();
         }
 
         public List<LoaiTietKiem> getList_LoaiTietKiem()

@@ -93,6 +93,7 @@
 
         <Button
             Grid.Column="1"
+            x:Name="manageRegulationButton"
             Grid.Row="1"
             FontSize="23"
             Content="Quản lí quy định"
@@ -270,6 +271,7 @@
                 BorderThickness="0"
                 d:SelectedDate="1/15/2023"
                 Text="{Binding OpenDate, StringFormat=dd/MM/yyyy}"
+                SelectedDateChanged="openDateDatePicker_SelectedDateChanged"
                 Style="{DynamicResource DatePickerStyle}" />
         </DockPanel>
         

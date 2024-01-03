@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using DTO_QLSTK;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace DAL_QLSTK;
 
@@ -30,7 +32,26 @@ public partial class QlStkContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=.\\SqlExpress; Trusted_Connection=Yes; Initial Catalog=QL_STK; TrustServerCertificate=True");
+       GetServerName();
+       optionsBuilder.UseSqlServer("Data Source=.\\SqlExpress; Trusted_Connection=Yes; Initial Catalog=QL_STK; TrustServerCertificate=True");
+    }
+    public static void GetServerName()
+    {
+        string serverName = Environment.MachineName;
+        RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
+        using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, registryView))
+        {
+            RegistryKey instanceKey = hklm.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL", false);
+            if (instanceKey != null)
+            {
+                foreach (var instanceName in instanceKey.GetValueNames())
+                {
+                    Debug.WriteLine("HELLO: " + serverName + "\\" + instanceName);
+                    serverName = serverName + "\\" + instanceName;
+                    break;
+                }
+            }
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
