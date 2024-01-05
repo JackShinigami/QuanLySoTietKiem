@@ -11,10 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTO_QLSTK", "DTO_QLSTK\DTO_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI_QLSTK", "GUI_QLSTK\GUI_QLSTK.csproj", "{6E8CEF2E-96AD-4100-95A0-3DDC97C2AABB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{8764E101-207F-4326-B699-04C2E6C9781B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI for test", "UI for test\UI for test.csproj", "{1E411E2A-E978-442D-AD4F-B3D90D0378F5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,14 +33,6 @@ Global
 		{6E8CEF2E-96AD-4100-95A0-3DDC97C2AABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E8CEF2E-96AD-4100-95A0-3DDC97C2AABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E8CEF2E-96AD-4100-95A0-3DDC97C2AABB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8764E101-207F-4326-B699-04C2E6C9781B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8764E101-207F-4326-B699-04C2E6C9781B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8764E101-207F-4326-B699-04C2E6C9781B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8764E101-207F-4326-B699-04C2E6C9781B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E411E2A-E978-442D-AD4F-B3D90D0378F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E411E2A-E978-442D-AD4F-B3D90D0378F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E411E2A-E978-442D-AD4F-B3D90D0378F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E411E2A-E978-442D-AD4F-B3D90D0378F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
