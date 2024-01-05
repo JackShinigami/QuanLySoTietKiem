@@ -202,7 +202,14 @@ namespace BUS_QLSTK
                     soThangGui -= soThangDaTinhLai;
                 }
 
-                result = -(soTietKiem.Sodu + (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soThangGui));
+                long tienLai = 0;
+
+                if (soThangGui > 0)
+                {
+                    tienLai = (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soThangGui);
+                }
+
+                result = -(soTietKiem.Sodu + tienLai);
 
             }
 
@@ -314,7 +321,10 @@ namespace BUS_QLSTK
                     soThangGui -= soThangDaTinhLai;
                 }
 
-                soTK.Sodu += (long)(soTK.Sodu * soTK.Laisuat * soThangGui);
+                if(soThangGui > 0)
+                {
+                    soTK.Sodu += (long)(soTK.Sodu * soTK.Laisuat * soThangGui);
+                }
 
                 soTK.Sodu += soTien;
 
@@ -423,7 +433,10 @@ namespace BUS_QLSTK
                         soThangGui -= soThangDaTinhLai;
                     }
 
-                    soTietKiem.Sodu += (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soThangGui );
+                    if(soThangGui > 0)
+                    {
+                        soTietKiem.Sodu += (long)(soTietKiem.Sodu * soTietKiem.Laisuat * soThangGui);
+                    }
 
                     if(soTien > soTietKiem.Sodu)
                     {
