@@ -167,6 +167,7 @@ namespace BUS_QLSTK
             {
                 var soNgayGui = (ngayRut - soTietKiem.Ngaymoso)?.Days;
                 var listPhieuRut = PhieuRut.GetList_PhieuRut();
+                var listPhieuGui = PhieuGui.GetList_PhieuGui();
 
 
                 if(soNgayGui < soTietKiem.Songayduocrut)
@@ -181,6 +182,14 @@ namespace BUS_QLSTK
                     if (phieuRut.Maso == maSo)
                     {
                         latestDate = phieuRut?.Ngayrut > latestDate ? phieuRut.Ngayrut : latestDate;
+                    }
+                }
+
+                foreach (var phieuGui in listPhieuGui)
+                {
+                    if (phieuGui.Maso == maSo)
+                    {
+                        latestDate = phieuGui?.Ngaygui > latestDate ? phieuGui.Ngaygui : latestDate;
                     }
                 }
 
@@ -276,6 +285,7 @@ namespace BUS_QLSTK
             else
             {
                 var listPhieuRut = PhieuRut.GetList_PhieuRut();
+                var listPhieuGui = PhieuGui.GetList_PhieuGui();
 
                 DateTime? latestDate = DateTime.MinValue;
 
@@ -284,6 +294,14 @@ namespace BUS_QLSTK
                     if (phieuRut.Maso == maSo)
                     {
                         latestDate = phieuRut?.Ngayrut > latestDate ? phieuRut.Ngayrut : latestDate;
+                    }
+                }
+
+                foreach (var phieuGui in listPhieuGui)
+                {
+                    if (phieuGui.Maso == maSo)
+                    {
+                        latestDate = phieuGui?.Ngaygui > latestDate ? phieuGui.Ngaygui : latestDate;
                     }
                 }
 
@@ -376,6 +394,7 @@ namespace BUS_QLSTK
                 else
                 {
                     var listPhieuRut = PhieuRut.GetList_PhieuRut();
+                    var listPhieuGui = PhieuGui.GetList_PhieuGui();
 
                     DateTime? latestDate = DateTime.MinValue;
 
@@ -384,6 +403,14 @@ namespace BUS_QLSTK
                         if (phieuRut.Maso == maSo)
                         {
                             latestDate = phieuRut?.Ngayrut > latestDate ? phieuRut.Ngayrut : latestDate;
+                        }
+                    }
+
+                    foreach (var phieuGui in listPhieuGui)
+                    {
+                        if (phieuGui.Maso == maSo)
+                        {
+                            latestDate = phieuGui?.Ngaygui > latestDate ? phieuGui.Ngaygui : latestDate;
                         }
                     }
 
